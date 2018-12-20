@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="common/header" /}
+	<title>个人信息</title>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/personal.css" media="all">
+</head>
+<body>
+<section class="layui-larry-box">
+    <form action="" method="post">
+	<div class="larry-personal">
+	    <div class="layui-tab">
+            <blockquote class="layui-elem-quote news_search">
+                <div class="layui-inline" onclick="add('添加轮播','{:url('add')}')">
+                    <a class="layui-btn layui-btn-normal newsAdd_btn">添加轮播</a>
+                </div>
+                <div class="layui-form layui-inline" style="padding: 0 0 0 30px; font-size: 14px; background-color: transparent;">
+                    <div class="layui-inline">
+                        <select name="banner_id" lay-filter="sel-bannerBit-filter">
+                            <option value="">请选择</option>
+                            {volist name="bannerBitDatas" id="bannerBit"}
+                            <option value="{$bannerBit.id}" {if condition="isset($bannerBitArr['id']) && $bannerBit.id eq $bannerBitArr.id"}selected{/if}>{$bannerBit.name}</option>
+                            {/volist}
+                        </select>
+                    </div>
+                    <!--isset($bannerBitArr['banner_id']) &&-->
+                </div>
+            </blockquote>
+            <!-- 操作日志 -->
+            <div class="layui-form news_list">
+                 <table class="layui-table">
+                    <thead>
+                        <tr>
+                            <th width="30">ID</th>
+                            <th>轮播图名称</th>
+                            <th>封面图</th>
+                            <th>轮播图类型</th>
+                            <th>跳转类型</th>
+                            <th>跳转类型id</th>
+                            <th>轮播图位</th>
+                            <th width="100">排序</th>
+                            <th width="200">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody class="news_content list-box-body">
+                        {volist name="bannerItemData" id="data"}
+                        <tr>
+                            <td align="center">{$data.id}</td>
+                            <td align="center">{$data.name}</td>
+                            <td align="center"><a href="__IMGSRC__{$data.img_url}"><img src="__IMGSRC__{$data.img_url}" alt=""></a></td>
+                            <td align="center">
+                                {switch name='$data.url_type'}
+                                    {case value='2'}视频{/case}
+                                    {default /} 图片
+                                {/switch}
+                            </td>
+                            <td align="center">{$typeArr[$data.type]}</td>
+                            <td align="center">{if condition="$data.key_word neq ''"}{$data.key_word}{else/}暂无{/if}</td>
+                            <td align="center"> {if condition='isset($bannerBitArr.name)'}{$bannerBitArr.name}{else/}未定义轮播位{/if} </td>
+
+                            <td align="center" class="tc tb-sort">
+                                <input type="input" name="sort[{$data.id}]" value="{$data.sort}" autocomplete="off" class="layui-input">
+                            </td>
+                            <td align="center">
+                                <a class="layui-btn layui-btn-mini tb_edit" onclick="editFull('编辑轮播图','{:url('edit',['id'=>$data['id']])}')"><i class="fa fa-pencil fa-fw"></i> 编辑</a>
+                                <a class="layui-btn layui-btn-danger layui-btn-mini tb_del" onclick="product_del(this,{$data->id})"><i class="layui-icon"></i> 删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        <tr class="sort-tr-wrap none">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td align="center"><button type="submit" class="layui-btn layui-btn-mini">排序</button></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                 </table>
+
+                 <div class="larry-table-page clearfix">
+                      <div class="paging">
+                      </div>
+                 </div>
+            </div>
+		</div>
+	</div>
+    </form>
+	
+</section>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+
+    $(function(){
+        if($(".list-box-body tr").length <= 1){
+            $(".sort-tr-wrap").hide();
+        }else{
+            $(".sort-tr-wrap").show();
+        }
+    });
+
+
+    /*产品-删除*/
+    function product_del(obj,id){
+        var url = "{:url('del')}?id="+id;
+        layer.confirm('确认要删除吗？',function(index){
+            $.ajax({
+                type: 'get',
+                url: url,
+                success: function(data){
+                    console.log(data);
+                    if(data.code == 1){
+                        layer.close(index);
+                        layer.msg('已删除!',{icon:1,time:1000});
+                        window.location = "{:url('lst')}";
+                    }
+                },
+                error:function(data) {
+                    console.log(data.msg);
+                },
+            });
+        });
+    }
+
+
+    function delMore() {
+        var idsArr = getCheckedId().idsArr;
+        var $checkDoms = getCheckedId().checkDoms;
+        reqChangeStutas({
+            idsArr: idsArr,
+            url:"{:url('del')}",
+            msgTip:'请先选择要删除的产品!',
+            confirmTip:'确认要删除吗？',
+            sCallback: function(data){
+                $checkDoms.each(function(index,item){
+                    $(item).parents('tr').remove();
+                });
+                layer.msg('已删除!',{icon:1,time:1000});
+            }
+        });
+    }
+
+    function getCheckedId() {
+        var $checkDoms = $('.list-box-body').find('input[type="checkbox"][name="checked"]:checked');
+        var idsArr = [];
+        $checkDoms.each(function (index,item) {
+            idsArr.push($(item).data('id'));
+        });
+        return {
+            idsArr:idsArr,
+            checkDoms:$checkDoms
+        };
+    }
+    
+    function reqChangeStutas(opts) {
+        var idsArr = opts.idsArr || [];
+        if(idsArr.length == 0){
+            layer.msg(opts.msgTip||'请先选择',{icon:1,time:1500});
+            return false;
+        }
+        layer.confirm(opts.confirmTip||'确认吗？',function(index){
+            console.log(index);
+            $.ajax({
+                url: opts.url,
+                type: opts.method || "POST",
+                data: {idsArr:idsArr},
+                success: function(data){
+                    opts.sCallback && opts.sCallback(data);
+                },
+                error:function(data) {
+                    opts.eCallback && opts.eCallback(data);
+                }
+            });
+        });
+    }
+    
+    layui.config({
+        base: '__STATIC__/admin/js/'
+    }).use(['form','layer','element','laypage'],function(){
+        window.layer = layui.layer;
+        var element = layui.element,
+        form = layui.form;
+
+        form.on('select(sel-bannerBit-filter)',function (data) {
+            window.location = "{:url('lst')}?banner_id="+data.value;
+        });
+
+    });
+</script>
+</body>
+</html>

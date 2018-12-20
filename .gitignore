@@ -1,0 +1,5 @@
+.idea
+*.log
+sql
+application/database.php
+runtime

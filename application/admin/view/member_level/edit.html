@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file='common/header'}
+    <title>layui</title>
+    <!--引入webuploaderCss-->
+    {Uploader:webuploadercss /}
+
+    <style>
+        .form-container{ padding-top: 30px;}
+    </style>
+</head>
+
+<body>
+<div class="form-container">
+    <form class="layui-form" action="">
+        <input type="hidden" value="{$editData.id}" name="id">
+        <div class="layui-form-item">
+            <label class="layui-form-label">级别名称</label>
+            <div class="layui-col-md2">
+                <input type="text" name="name" value="{$editData.name}" lay-verify="name" autocomplete="off" placeholder="级别名称" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分下限</label>
+            <div class="layui-col-md2">
+                <input type="text" name="bom_point" value="{$editData.bom_point}" lay-verify="required|number" autocomplete="off" placeholder="积分下限" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分上限</label>
+            <div class="layui-col-md2">
+                <input type="text" name="top_point" value="{$editData.top_point}" lay-verify="required|number" autocomplete="off" placeholder="积分上限" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">折扣率</label>
+            <div class="layui-col-md2">
+                <input type="text" name="rate" value="{$editData.rate}" lay-verify="required|number" autocomplete="off" placeholder="折扣率" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{include file='common/footer'}
+
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function() {
+        var form = layui.form,
+            layer = layui.layer;
+
+        //自定义验证规则
+        form.verify({
+            name: function(value) {
+                if (value.length < 2) {
+                    return '标题至少得2个字符啊';
+                }
+            },
+            content: function(value) {
+
+            }
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function(data) {
+            var formDom = data.form;
+            $.ajax({
+                url: "{:url('save')}",
+                type: "post",
+                data: $(formDom).serialize(),
+                success: function(res){
+                    var msgParams = {
+                        iconNum: 6,
+                        anim: 0
+                    };
+                    if(res.code == 0){
+                        msgParams.iconNum = 5;
+                        msgParams.anim = 6;
+                    }
+                    layer.msg(res.msg, {icon: msgParams.iconNum,time:1000,anim:msgParams.anim});
+                    setTimeout(function(){
+                        if(res.data){
+                            parent.window.location = res.data;
+                        }
+                    },1000);
+                }
+            });
+
+
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+
+</html>

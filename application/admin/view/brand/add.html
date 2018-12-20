@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file='common/header'}
+    <title>layui</title>
+    <!--引入webuploaderCss-->
+    {Uploader:webuploadercss /}
+
+    <style>
+        .form-container{ padding-top: 30px;}
+    </style>
+</head>
+
+<body>
+    <div class="form-container">
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="brand_name" lay-verify="brand_name" autocomplete="off" placeholder="请输入标题" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌网址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="brand_url" lay-verify="required|brand_url" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌LOGO</label>
+                <div class="layui-input-block upload-img-wrap">
+                    {Uploader:webuploader btnVal="上传LOGO"}{/Uploader:webuploader}
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">品牌描述</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" name="brand_description" class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">品牌状态</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="status" value="1" title="显示" checked="">
+                    <input type="radio" name="status" value="0" title="隐藏">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {include file='common/footer'}
+    <!--引入webuploaderJS-->
+    {Uploader:webuploaderjs/}
+    <script>
+        var config = {
+            "upload_server": "{:url('uploadImg')}"
+        };
+
+        feiy_upload.init({
+            server: config.upload_server,
+            fileNumLimit: 2
+        });
+    </script>
+    <script>
+        layui.use(['form', 'layedit', 'laydate'], function() {
+            var form = layui.form,
+                layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+//                brand_name: function(value) {
+//                    if (value.length < 2) {
+//                        return '标题至少得2个字符啊';
+//                    }
+//                },
+//                brand_url: [/(^#)|(^http(s*):\/\/[^\s]+\.[^\s]+)/,"链接格式不正确"],
+                content: function(value) {
+
+                }
+            });
+
+            //监听提交
+            form.on('submit(demo1)', function(data) {
+                var formDom = data.form;
+                var logo_img = $("#uploader .filelist > li");
+                var logo_img_url = setUpdateUrl(logo_img);
+                var params = "&brand_img="+logo_img_url;
+                console.log(1111);
+                $.ajax({
+                    url: "{:url('save')}",
+                    type: "post",
+                    data: $(formDom).serialize()+params,
+                    success: function(res){
+                        var msgParams = {
+                            iconNum: 6,
+                            anim: 0
+                        };
+                        if(res.code == 0){
+                            msgParams.iconNum = 5;
+                            msgParams.anim = 6;
+                        }
+                        layer.msg(res.msg, {icon: msgParams.iconNum,time:1000,anim:msgParams.anim});
+
+                        setTimeout(function(){
+                            if(res.data){
+                                parent.window.location = res.data;
+                            }
+                        },1000);
+                    }
+                });
+
+
+                return false;
+            });
+
+
+        });
+    </script>
+
+</body>
+
+</html>

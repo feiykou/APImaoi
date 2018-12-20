@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {include file='common/header'}
+    <title>layui</title>
+    <!--引入webuploaderCss-->
+    {Uploader:webuploadercss /}
+
+    <style>
+        .form-container{ padding-top: 30px;}
+    </style>
+</head>
+
+<body>
+<div class="form-container">
+    <form class="layui-form" action="">
+        <input type="hidden" name="id" value="{$editData.id}">
+        <div class="layui-form-item">
+            <label class="layui-form-label">轮播图位置</label>
+            <div class="layui-inline">
+                <select name="banner_id" lay-verify="banner_bit">
+                    <option value="0">请选择</option>
+                    {volist name='bannerBit' id='resData'}
+                    <option value="{$resData.id}" {if condition="$editData.banner_id eq $resData.id"}selected{/if}>{$resData.name}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">轮播图标题</label>
+            <div class="layui-col-md2">
+                <input type="text" name="name" lay-verify="name"  value="{$editData.name}" autocomplete="off" placeholder="请输入轮播图标题" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上传轮播图</label>
+            <div class="layui-input-block upload-img-wrap">
+                {Uploader:webuploader btnVal="上传轮播图"}
+                {if condition="$editData.img_url neq ''"}
+                <ul class="filelist filelist-exist clearfix">
+                    <li class="state-complete" data-src="{$editData.img_url}">
+                        <p class="imgWrap"><img src="__IMGSRC__{$editData.img_url}" width="110" height="110"></p>
+                        <div class="file-panel"><span class="cancel">删除</span></div>
+                        <span class="success"></span>
+                    </li>
+                </ul>
+                {/if}
+                {/Uploader:webuploader}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">轮播图类型</label>
+            <div class="layui-input-block banner-type-item">
+                <input type="radio" lay-filter="radio-type-filter" name="url_type" value="1" title="图片" {if condition="$editData.url_type eq 1"}checked{/if}>
+                <input type="radio" lay-filter="radio-type-filter" name="url_type" value="2" title="视频" {if condition="$editData.url_type eq 2"}checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item upload-video {if condition="$editData.url_type eq 1"}none{/if}">
+            <label class="layui-form-label">上传视频</label>
+            <div class="layui-input-block">
+                <div class="layui-upload-drag">
+                    {if condition="$editData.video_url neq ''"}
+                    <div class="video-add-item none" id="videoItem" data-videosrc="{$editData.video_url}">
+                        <i class="layui-icon"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                    <div class="video-wrap pr">
+                        <video controls id="videoattr" width="250" src="__VIDEOSRC__{$editData.video_url}" ></video>
+                        <i class="video-close fa fa-window-close font16"></i>
+                    </div>
+                    {else/}
+                    <div class="video-add-item" id="videoItem">
+                        <i class="layui-icon"></i>
+                        <p>点击上传，或将文件拖拽到此处</p>
+                    </div>
+                    <div class="video-wrap pr none">
+                        <video controls id="videoattr" width="250" ></video>
+                        <i class="video-close fa fa-window-close font16"></i>
+                    </div>
+                    {/if}
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">跳转类型</label>
+            <div class="layui-input-block">
+                {volist name="typeArr" id="type"}
+                <input type="radio" lay-verify="typeVerify" {if condition="$key eq $editData.type"}checked{/if} name="type" value="{$key}" title="{$type}">
+                {/volist}
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">跳转id</label>
+            <div class="layui-col-md1">
+                <input type="text" name="key_word" lay-verify="key_word_verify" autocomplete="off" value="{$editData.key_word}" placeholder="请输入跳转id" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{include file='common/footer'}
+<!--引入webuploaderJS-->
+{Uploader:webuploaderjs/}
+<script>
+    var config = {
+        "upload_server": "{:url('uploadImg')}",
+        'video_upload_server': "{:url('uploadVideo')}"
+    };
+
+    feiy_upload.init({
+        server: config.upload_server,
+        fileNumLimit: 1
+    });
+</script>
+<script>
+
+    // 检查图片数量是否超过设置值，超出则禁止
+    $(function () {
+        checkUpload();
+    });
+
+    function checkUpload(){
+        var logo_img = $("#uploader .filelist > li");
+        setTimeout(function(){
+            setNoDrop(logo_img,1);
+        },500);
+    }
+
+    function setNoDrop($dom,num){
+        var num = num?num:1;
+        var length = $dom.length;
+        console.log(length,num);
+        if(length >=num){
+            $dom.parents(".queueList").prev().find(".webuploader-pick").css({
+                'position': 'relative',
+                'zIndex': 1,
+                'background': '#f0f0f0',
+                'cursor': 'no-drop'
+            });
+        }
+    }
+    // 图片编辑
+    $(".filelist-exist").parents(".queueList").css({
+        'display': 'block',
+        'opacity': 1
+    });
+    $(".filelist-exist").find("li").hover(function(){
+        $(this).find(".file-panel").stop(true).animate({height:"30px"},300);
+    },function(){
+        $(this).find(".file-panel").stop(true).animate({height:0},300);
+    });
+
+    $(".filelist-exist").on("click","span.cancel",function(){
+        $btnDom = $(this).parents(".queueList").prev().find(".webuploader-pick");
+        $btnDom.css({
+            'background': "none",
+            'cursor': 'pointer',
+            'z-index': 0});
+        $li = $(this).parents("li");
+        $parents = $li.parents('.filelist-exist');
+        $li.remove();
+        if($parents.find("li").length == 0){
+            $parents.remove();
+        }
+    });
+
+    // 删除视频
+    $(".video-close").on('click',function(){
+        $delsrc = $(this).prev().attr('src');
+        var $this = $(this);
+        layer.confirm('确定要删除视频吗？', {icon: 3, title:'提示'}, function(index){
+            $.ajax({
+                url: "{:url('delFile')}",
+                type: "post",
+                data: {
+                    delsrc: $delsrc
+                },
+                success: function(res){
+                    if(res.code == 1){
+                        layer.msg(res.msg, {icon: 1,time:1000,anim:1});
+                        $this.prev().attr('src','');
+                        $this.parent().hide().parent().find('.video-add-item').show();
+                    }else{
+                        layer.msg(res.msg, {icon: 5,time:1000,anim:6});
+                    }
+                }
+            });
+            layer.close(index);
+        });
+    });
+
+
+    layui.use(['form', 'layedit', 'laydate','upload'], function() {
+        var form = layui.form,
+            layer = layui.layer,
+            upload = layui.upload;
+
+        form.on('radio(radio-type-filter)',function(data){
+            if(data.value != 1){
+                $('.upload-video').show();
+            }else{
+                $('.upload-video').hide();
+            }
+        });
+
+
+
+        // 视频上传
+        var uploadInst = upload.render({
+            elem: '#videoItem' //绑定元素
+            ,url: "{:url('uploadVideo')}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code == 1){
+                    $(".video-add-item").hide();
+                    $(".video-wrap").show().find('video').attr('src','__VIDEOSRC__'+res.data);
+                    $("#videoItem").data('videosrc',res.data);
+                }else{
+                    $("#videoItem").data('videosrc','');
+                }
+            }
+            ,accept: 'video'
+            ,error: function(){
+                $("#videoItem").data('videosrc','');
+            }
+        });
+
+        //自定义验证规则
+        form.verify({
+            name: function(value) {
+                if (value.length < 2) {
+                    return '标题至少得2个字符啊';
+                }
+            },
+            banner_bit: function(value, item){
+                if(value == 0){
+                    return '轮播图位置不能为空！';
+                };
+            },
+            key_word_verify: function (value, item) {
+                if($("input[name='type']:checked").val() != 0){
+                    if(value == ''){
+                        return  '跳转id必须添加';
+                    }
+                    console.log(value);
+                    if(!/^\d+$/.test(value)){
+                        return  '跳转id必须是正整数或者0';
+                    }
+                }
+
+            },
+            content: function(value) {
+
+            }
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function(data) {
+            var formDom = data.form;
+            // 获取轮播图字符串地址
+            var banner_img_lists = $("#uploader .filelist > li");
+            var banner_img_url = setUpdateUrl(banner_img_lists);
+
+            if(banner_img_url == ''){
+                layer.msg('轮播图不能为空', {icon: 5,time:1000,anim:6});
+                return false;
+            };
+
+            // 图片和视频参数
+            var params = "&img_url="+banner_img_url;
+
+            // 验证视频视频添加
+            $radioTypeVal = $("input[type='radio'][name='url_type']:checked").val();
+            if($radioTypeVal == 2){
+                // 获取视频字符串地址
+                var video_url = $("#videoItem").data('videosrc');
+                if(video_url == '' || video_url == undefined){
+                    layer.msg('视频不能不能为空', {icon: 5,time:1000,anim:6});
+                    return false;
+                };
+                params += "&video_url="+video_url;
+            }else{
+                params += "&video_url="+'';
+            }
+            $.ajax({
+                url: "{:url('save')}",
+                type: "post",
+                data: $(formDom).serialize()+params,
+                success: function(res){
+                    console.log(res);
+                    var msgParams = {
+                        iconNum: 6,
+                        anim: 0
+                    };
+                    if(res.code == 0){
+                        msgParams.iconNum = 5;
+                        msgParams.anim = 6;
+                    }
+                    layer.msg(res.msg, {icon: msgParams.iconNum,time:1000,anim:msgParams.anim});
+                    setTimeout(function(){
+                        if(res.data){
+                            parent.window.location = res.data;
+                        }
+                    },1000);
+                }
+            });
+            return false;
+        });
+
+
+    });
+</script>
+
+</body>
+
+</html>

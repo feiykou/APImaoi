@@ -1,0 +1,66 @@
+@import url(fonts/font-awesome.css);
+/* 布局 */
+.site-inline{font-size: 0;}
+.site-tree, .site-content{display: inline-block;  *display:inline; *zoom:1; vertical-align: top; font-size: 14px;}
+.site-tree{width: 220px; min-height: 900px; padding: 5px 0 20px;}
+.site-content{width: 899px; min-height: 900px; padding: 20px 0 10px 20px;}
+
+
+
+.symbol{width:40%;padding:1.4em 0;border-radius:4px 0 0 4px;display:inline-block;text-align:center}
+.symbol i{color:#fff;font-size:3em}
+.value{width:58%;text-align:center;float:right;}
+.value a{ color:#666; font-family: "Microsoft YaHei","Helvetica Neue";}
+.value a:hover{ text-decoration:none;}
+.value h1{font-size:1.8em; margin-top:10px;}
+.bgcolor-blue{background:#1E9FFF}
+.color-blue{color:#1E9FFF}
+.bgcolor-commred{background:#ff6c60}
+.color-commred{color:#ff6c60}
+.bgcolor-dark-green{background:#009688}
+.color-dark-green{color:#009688}
+.bgcolor-yellow-green{background:#5FB878}
+.color-yellow-green{color:#5FB878}
+.bgcolor-orange{background:#FF5722}
+.color-orange{color:#FF5722}
+.bgcolor-yellow{background:#F7B824}
+.layui-elem-quote{ font-family: "Microsoft YaHei","Helvetica Neue";}
+
+.ygyd-wrapper .panel{ border:1px solid #EEE}
+.ygyd-wrapper .panel-heading {font-family: "Microsoft YaHei","Helvetica Neue"; border-bottom:1px solid #EEE;  padding:1em; font-size:16px;}
+
+
+/*iframe内样式*/
+
+
+
+.x-body{padding:20px}
+.x-nav{padding:0 20px;position:relative;z-index:99;border-bottom:1px solid #e5e5e5;line-height:39px;height:39px;overflow:hidden}
+.x-center{text-align:center;margin:0 auto}
+xblock{display:block;margin-bottom:10px;padding:5px;line-height:22px;border-radius:0 2px 2px 0;background-color:#f2f2f2}
+.x-right{float:right}
+.x-red{color:red}
+
+
+/**统计**/
+.larry-wrapper{display:inline-block;padding:20px;width:100%;}
+.panel{border:none;border-radius: 2px;background: #f2f2f2;}
+.panel-heading{border-color:#eff2f7;font-size:14px;font-weight:300;padding: 15px 20px;border-left: 5px solid #2299ee;}
+.panel-heading select,.panel-heading input{height: 30px;}
+.panel-footer{background-color: transparent;border: none;}
+.panel>.table+.panel-body{border-top: none;}
+.bm0{border-bottom: 0 !important;}
+.mr0{margin:0 !important;}
+/* overview.css */
+.state-overview .symbol,.state-overview .value{display:inline-block;text-align:center;}
+.state-overview .value{float:right;}
+.state-overview .value h1,.state-overview .value p{margin:0;padding:0;color:#333;font-family: Arial,Helvetica,sans-serif;}
+.state-overview .value:hover h1,.state-overview .value:hover p{color:#333;}
+.state-overview .value h1{font-weight:300;}
+.state-overview .symbol i{color:#fff;font-size:50px;}
+.state-overview .symbol{width:40%;padding:25px 30px;-webkit-border-radius:4px 0px 0px 4px;border-radius:4px 0px 0px 4px;}
+.state-overview .value{width:58%;padding-top:21px;}
+.state-overview .userblue{background:#54ade8;}
+.state-overview .commred{background:#FF5722;}
+.state-overview .articlegreen{background:#009688;}
+.state-overview .rsswet{background:#2F4056;}
