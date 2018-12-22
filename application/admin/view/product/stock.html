@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="common/header" /}
+	<title>个人信息</title>
+	<link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/personal.css" media="all">
+</head>
+<body>
+<section class="layui-larry-box">
+    <form action="" method="post">
+         <!-- 操作日志 -->
+        <div class="layui-form news_list">
+             <table class="layui-table">
+                <thead>
+                    <tr>
+                        {volist name="radioAttrRes" id="radioAttr"}
+                        <th>{$key}</th>
+                        {/volist}
+                        <th>库存量</th>
+                        <th>现价</th>
+                        <th>市场价</th>
+                        <th width="60">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="news_content list-box-body">
+                    <?php if($stockDatas):
+                        foreach($stockDatas as $k0 => $v0):
+                    ?>
+                    <tr>
+                        <?php foreach($radioAttrRes as $k=>$v):?>
+                        <td align="center" class="tc">
+                            <div class="layui-inline sel-size-wrap">
+                                <select name="product_prop[{$k}][]">
+                                    <option value="0">请选择</option>
+                                    <?php foreach($v as $k1=>$v1):
+                                        $arr = explode(',',$v0['product_prop']);
+                                        if(in_array($v1['id'], $arr)){
+                                            $select = 'selected';
+                                        }else{
+                                            $select = '';
+                                        }
+                                    ?>
+                                    <option <?php echo $select;?> value="<?php echo $v1['id']?>"><?php echo $v1['prop_value'];?></option>
+                                    <?php endforeach;?>
+                                </select>
+                            </div>
+                        </td>
+                        <?php endforeach;?>
+                        <td align="center" class="tc tb-sort">
+                            <input type="input" name="stock_num[]" value="<?php echo $v0['stock_num']?>" autocomplete="off" class="layui-input">
+                        </td>
+                        <td align="center" class="tc">
+                            <input type="input" name="price[]" value="<?php echo $v0['price']?>" autocomplete="off" class="layui-input">
+                        </td>
+                        <td align="center" class="tc tb-sort">
+                            <input type="input" name="market_price[]" value="<?php echo $v0['market_price']?>" autocomplete="off" class="layui-input">
+                        </td>
+                        <td align="center">
+                            <a class="layui-btn layui-btn-mini" <?php if(count($radioAttrRes) != 0){
+                                    echo 'onclick="addtr(this)"';
+                                }else{
+                                    echo "style='background:#ddd;'";
+                                }
+                                ?>">
+                                <i class="fa <?php if($k0==0){
+                                    echo 'fa-plus-square';
+                                }else{
+                                    echo 'fa-minus-square';
+                                } ?> fa-fw"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; else:?>
+                        <tr>
+                            <?php foreach($radioAttrRes as $k=>$v):?>
+                            <td align="center" class="tc">
+                                <div class="layui-inline sel-size-wrap">
+                                    <select name="product_prop[{$k}][]">
+                                        <option value="">请选择</option>
+                                        <?php foreach($v as $k1=>$v1):?>
+                                        <option value="<?php echo $v1['id']?>"><?php echo $v1['prop_value'];?></option>
+                                        <?php endforeach;?>
+                                    </select>
+                                </div>
+                            </td>
+                            <?php endforeach;?>
+                            <td align="center" class="tc tb-sort">
+                                <input type="input" name="stock_num[]" autocomplete="off" class="layui-input">
+                            </td>
+                            <td align="center" class="tc">
+                                <input type="input" name="price[]" value="" autocomplete="off" class="layui-input">
+                            </td>
+                            <td align="center" class="tc tb-sort">
+                                <input type="input" name="market_price[]" value="" autocomplete="off" class="layui-input">
+                            </td>
+                            <td align="center">
+                                <a class="layui-btn layui-btn-mini" <?php if(count($radioAttrRes) != 0){
+                                    echo 'onclick="addtr(this)"';
+                                }else{
+                                    echo "style='background:#ddd;'";
+                                }
+                                ?> "><i class="fa fa-plus-square fa-fw"></i></a>
+                            </td>
+                        </tr>
+                    <?php endif;?>
+
+                </tbody>
+             </table>
+            <div class="layui-form-item tr">
+                <div class="layui-inline">
+                    <button class="layui-btn" data-id="{$product_id}"  lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+             <div class="larry-table-page clearfix">
+                  <div class="paging">
+                  </div>
+             </div>
+        </div>
+    </form>
+</section>
+
+{include file="common/footer" /}
+
+<script type="text/javascript">
+
+    layui.config({
+        base: '__STATIC__/admin/js/'
+    }).use(['form','layer','element','laypage'],function(){
+        window.layer = layui.layer;
+        var element = layui.element,
+        form = layui.form;
+        window.addtr = function(o){
+            var tr=$(o).parent().parent();
+            if($(o).find('i').hasClass('fa-plus-square')){
+                var newtr=tr.clone();
+                newtr.find('i').removeClass('fa-plus-square').addClass('fa-minus-square');
+                tr.after(newtr);
+            }else{
+                tr.remove();
+            }
+            form.render('select');
+        }
+
+        //监听提交
+        form.on('submit(demo1)', function(data) {
+
+            var formDom = data.form;
+            var product_id = $(data.elem).data('id');
+            $.ajax({
+                url: "{:url('stock')}",
+                type: "post",
+                data: $(formDom).serialize()+'&id='+product_id,
+                success: function(res){
+                    var msgParams = {
+                        iconNum: 6,
+                        anim: 0
+                    };
+                    if(res.code == 0){
+                        msgParams.iconNum = 5;
+                        msgParams.anim = 6;
+                    }
+                    layer.msg(res.msg, {icon: msgParams.iconNum,time:1000,anim:msgParams.anim});
+                    setTimeout(function(){
+                        if(res.data){
+                            parent.window.location = res.data;
+                        }
+                    },1000);
+                }
+            });
+
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>
