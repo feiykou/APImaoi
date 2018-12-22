@@ -142,7 +142,6 @@ function setUpdateUrl($childsDom,attr,delimiter,len){
             if(len && index>len){
                 break;
             }
-            console.log($li);
             params += $li.data(attr) + delimiter;
         }
     }

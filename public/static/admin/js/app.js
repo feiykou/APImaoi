@@ -71,26 +71,26 @@ layui.define(['element', 'nprogress', 'form', 'table', 'loader', 'tab', 'navbar'
                 });
             }
             if (_config.type === 'iframe') {
-                tab.set({
-                    elem: '#container',
-                    onSwitch: function(data) { //选项卡切换时触发
-                        //console.log(data.layId); //lay-id值
-                        //console.log(data.index); //得到当前Tab的所在下标
-                        //console.log(data.elem); //得到当前的Tab大容器
-                    },
-                    closeBefore: function(data) { //关闭选项卡之前触发
-                        // console.log(data);
-                        // console.log(data.icon); //显示的图标
-                        // console.log(data.id); //lay-id
-                        // console.log(data.title); //显示的标题
-                        // console.log(data.url); //跳转的地址
-                        return true; //返回true则关闭
-                    }
-                }).render();
-                //navbar加载方式一，直接绑定已有的dom元素事件                
-                navbar.bind(function(data) {
-                    tab.tabAdd(data);
-                });
+                // tab.set({
+                //     elem: '#container',
+                //     onSwitch: function(data) { //选项卡切换时触发
+                //         //console.log(data.layId); //lay-id值
+                //         //console.log(data.index); //得到当前Tab的所在下标
+                //         //console.log(data.elem); //得到当前的Tab大容器
+                //     },
+                //     closeBefore: function(data) { //关闭选项卡之前触发
+                //         // console.log(data);
+                //         // console.log(data.icon); //显示的图标
+                //         // console.log(data.id); //lay-id
+                //         // console.log(data.title); //显示的标题
+                //         // console.log(data.url); //跳转的地址
+                //         return true; //返回true则关闭
+                //     }
+                // }).render();
+                // //navbar加载方式一，直接绑定已有的dom元素事件
+                // navbar.bind(function(data) {
+                //     tab.tabAdd(data);
+                // });
                 //navbar加载方式二，设置远程地址加载
                 // navbar.set({
                 //     remote: {

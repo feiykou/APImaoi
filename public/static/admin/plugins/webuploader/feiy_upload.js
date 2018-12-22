@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> b24c66b7791df497a96b5345e0144aaed646c54b
 var feiy_upload = {
     upload_time: 0,
     plugObj: jQuery,

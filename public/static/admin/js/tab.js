@@ -11,7 +11,7 @@ layui.define(["jquery", "element", "nprogress"],
                     elem: void 0,
                     mainUrl: "/admin/index/main"
                 },
-                    this.v = "1.0.2"
+                this.v = "1.0.2"
             }; (n.fn = n.prototype).set = function(i) {
             var e = this;
             return t.extend(!0, e.config, i),
