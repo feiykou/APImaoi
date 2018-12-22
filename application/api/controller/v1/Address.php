@@ -28,9 +28,11 @@ class Address extends BaseController
     public function getDefaultAddress(){
         $uid = TokenService::getCurrentUid();
         $userAddress = UserAddress::where(['user_id' => $uid, 'status' => 1])
-            ->order('update_time desc')
-            ->whereOr(['is_default' => 1])
-            ->find();
+            ->order([
+                'is_default' => 'desc',
+                'update_time' => 'desc'
+            ])->find();
+
         return $userAddress;
     }
 
