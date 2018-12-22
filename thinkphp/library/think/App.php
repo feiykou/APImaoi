@@ -553,6 +553,11 @@ class App
         $controller = strip_tags($result[1] ?: $config['default_controller']);
         $controller = $convert ? strtolower($controller) : $controller;
 
+        // 防止漏洞新增代码
+        if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
+            throw new HttpException(404, 'controller not exists:' . $controller);
+        }
+
         // 获取操作名
         $actionName = strip_tags($result[2] ?: $config['default_action']);
         if (!empty($config['action_convert'])) {

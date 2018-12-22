@@ -25,11 +25,10 @@ class Product extends Base
     public function lst(){
         $join = [
             ['category c','p.category_id=c.id','LEFT'],
-            ['type t', 'p.type_id=t.id','LEFT'],
-            ['product_stock ps', 'p.id=ps.product_id','LEFT']
+            ['type t', 'p.type_id=t.id','LEFT']
         ];
         $productRes = db('product')->alias('p')
-            ->field('p.*,c.cate_name,t.name as type_name,SUM(ps.stock_num) gn')
+            ->field('p.*,c.cate_name,t.name as type_name')
             ->join($join)
             ->group('p.id')
             ->order('p.id DESC')
@@ -101,7 +100,6 @@ class Product extends Base
         foreach ($_ppropRes as $k => $v){
             $ppropRes[$v['prop_id']][] = $v;
         }
-
         // 商品分类
         $Category=new Catetree();
         $CategoryObj=db('Category');
@@ -232,6 +230,7 @@ class Product extends Base
 
             $productProp = isset($data['product_prop']) ? $data['product_prop'] : [];
             $stock_num = $data['stock_num'];
+            $stock_total = 0;
 
             foreach ($stock_num as $k=>$v){
 
@@ -242,15 +241,18 @@ class Product extends Base
                     }
                     $strArr[] = $v1[$k];
                 }
-
+                $stock_total += $v;
                 sort($strArr);
                 $strArr = implode(',',$strArr);
                 $stock->insert([
                     'product_id' => $id,
                     'stock_num' => $v,
+                    'price' => $data['price'][$k],
+                    'market_price' => $data['market_price'][$k],
                     'product_prop' => $strArr
                 ]);
             }
+            db('product')->where('id','=',$id)->update(['stock_total'=>$stock_total]);
             $this->result(url('lst'),'1','添加成功');
         }
 

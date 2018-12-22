@@ -41,24 +41,11 @@ class Address extends BaseController
      * @return false|\PDOStatement|string|\think\Collection
      * @throws UserException
      */
-    public function getUserAddress()
+    public function getUserAddress($page, $size)
     {
         $uid = TokenService::getCurrentUid();
-        $userAddress = UserAddress::where([
-            'user_id' => $uid,
-            'status' => 1
-        ])->order([
-                'is_default' => 'desc',
-                'update_time' => 'desc'
-            ])
-            ->select();
-        if(!$userAddress){
-            throw new UserException([
-                'msg'   => '用户地址不存在',
-                'errorCode' =>  60001
-            ]);
-        }
-        return $userAddress;
+        $addressData = UserAddress::getUserAddress($uid, $page, $size);
+        return $addressData;
     }
 
     /**

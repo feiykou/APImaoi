@@ -41,6 +41,7 @@ class UserToken extends Token
      * 思路3：重新去微信刷新session_key并删除当前Token，返回新的Token
      */
     public function get(){
+
         $result = curl_get($this->wxLoginUrl);
         // 注意json_decode的第一个参数true
         // 这将使字符串被转化为数组而非对象

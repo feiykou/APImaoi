@@ -203,6 +203,69 @@
         // 删除上传图片
         cancelImg();
 
+        function sfile_upload(obj) {
+            var mark = true;
+            $(obj).on('change',function(){
+                if(mark){
+                    var formData = new FormData();
+                    formData.append('file',$(obj)[0].files[0]);
+                    $.ajax({
+                        url: "{:url('uploadImg')}",
+                        data: formData,
+                        type: "POST",
+                        dataType: "json",
+                        contentType: false,
+                        processData: false,
+                        cache: false,
+                        success: function (res) {
+                            if(res.code == 1){
+                                $(obj).next().val(res.data);
+                                var imgBox = $(obj).parent().next();
+                                var $imgWrap = imgBox.find('.img');
+                                $imgWrap.data('src',res.data);
+
+                                var img = new Image();
+                                img.src = "__IMGSRC__"+res.data;
+                                $imgWrap.html(img);
+                                imgBox.css('display','inline-block');
+                                mark = false;
+                            }
+                        }
+                    })
+                }
+            });
+        }
+
+        // 删除属性图片
+        $("#prop_list").on('click','.file-img-mask',function(){
+            $delsrc = $(this).prev().data('src');
+            var $this = $(this);
+            layer.confirm('确定要删除图片吗？', {icon: 3, title:'提示'}, function(index){
+                $.ajax({
+                    url: "{:url('delFile')}",
+                    type: "post",
+                    data: {
+                        delsrc: "__IMGSRC__"+$delsrc
+                    },
+                    success: function(res){
+                        if(res.code == 1){
+                            layer.msg(res.msg, {icon: 1,time:1000,anim:1});
+                            $this.prev().data('src','');
+                            $this.parent().prev().find('input[type="hidden"]').val('');
+                            $this.parent().prev().find('input[type="file"]').val('');
+                            $this.prev().html('');
+                            $this.parent().hide();
+                        }else{
+                            layer.msg(res.msg, {icon: 5,time:1000,anim:6});
+                        }
+                    }
+                });
+                layer.close(index);
+            });
+        });
+
+
+
         layui.use(['form', 'layedit', 'element', 'laydate', 'jquery'], function() {
             var form = layui.form,
                 layer = layui.layer,
@@ -220,13 +283,17 @@
             var editIndex = layedit.build('LAY_demo_editor');
 
             window.addrow = function(o){
-                var div=$(o).parent();
+                var $div=$(o).parent();
                 if($(o).html() == '[+]'){
-                    var newdiv=div.clone();
+                    var newdiv=$div.clone();
                     newdiv.find('a').html('[-]');
-                    div.after(newdiv);
+                    // 清空缩略图
+                    newdiv.find('.img').html('');
+                    newdiv.find('input[type="file"]').next().val('');
+                    newdiv.find('input[type="file"]').val('');
+                    $div.parent().append(newdiv);
                 }else{
-                    div.remove();
+                    $div.remove();
                 }
                 form.render('select');
             }
@@ -256,7 +323,7 @@
                                 html+='<div class="layui-col-md6">';
                                 html+='<div>';
                                 var attrValuesArr = data.values.split(',');
-                                html+='<a href="#" class="btn-add-reduce" onclick="addrow(this);">[+]</a>';
+                                html+='<a href="javascript:;" class="btn-add-reduce" onclick="addrow(this);">[+]</a>';
 
                                 html+='<div class="layui-inline" style="width: 160px; margin-left: 6px;">';
                                 html+='<select name="product_prop['+data.id+'][]" lay-filter="ss">';
@@ -270,6 +337,13 @@
                                 html+='<input type="text" name="prop_price[]" autocomplete="off" placeholder="请输入自定义价格" class="layui-input">';
                                 html+='<input type="hidden" name="prop_name[]" value="'+data.name+'" autocomplete="off" class="layui-input">';
                                 html+='</div>';
+                                if(data.is_add_img == 1){
+                                    html+='<div class="layui-inline upload-file-wrap">点击上传图片';
+                                    html+='<input type="file" onclick="sfile_upload(this)" class="file-input-inline" name="image" />';
+                                    html+='<input type="hidden" name="propImage['+data.id+'][]" />';
+                                    html+='</div>';
+                                    html+='<div class="layui-inline file-img-wrap"><div class="img"></div><div class="file-img-mask">删除</div></div>';
+                                }
                                 html+='</div>';
                                 html+='</div>';
                                 html+='</div>';
@@ -299,12 +373,18 @@
 
 
 
+
+
                         });
                         $("#prop_list").html(html);
                         form.render('select');
                     }
                 });
             });
+
+
+
+
 
 
 

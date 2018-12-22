@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'img_prefix' => 'http://tbaup.cn',
+    'img_prefix' => 'http://yue.mgoi.net',
     'token_expire_in'   =>   7200
 ];

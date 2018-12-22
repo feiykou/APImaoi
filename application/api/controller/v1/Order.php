@@ -70,22 +70,19 @@ class Order extends BaseController
      * @param   int $size
      * @return  array
      */
-    public function getSummaryByUser($page=1, $size=10, $status=-1){
+    public function getSummaryByUser($page=1, $size=4, $status=-1){
         (new PagingParameter())->goCheck();
         $uid = TokenService::getCurrentUid();
         $pagingOrders = OrderModel::getSummaryByUser($uid, $page, $size, $status);
         if($pagingOrders->isEmpty()){
             return [
-                'current_page' => $pagingOrders->currentPage(),
+                'has_more' => false,
                 'data' => []
             ];
         }
         $data = $pagingOrders->hidden(['snap_items', 'snap_address'])
             ->toArray();
-        return [
-            'current_page' => $pagingOrders->currentPage(),
-            'data' => $data
-        ];
+        return $data;
     }
 
 

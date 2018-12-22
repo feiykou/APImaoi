@@ -62,7 +62,6 @@ class Pay
 
     // 向微信请求订单号并生成签名
     private function getPaySignature($wxOrderData){
-
         $wxOrder = \WxPayApi::unifiedOrder($this->config, $wxOrderData);
         // 失败时不会返回result_code
         if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] != 'SUCCESS'){

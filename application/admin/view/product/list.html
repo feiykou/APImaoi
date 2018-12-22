@@ -55,7 +55,7 @@
                                 <td align="center">{if condition="$data['type_name']"}{$data.type_name}{else /}未设置{/if}</td>
                                 <td align="center">{$data.weight}</td>
                                 <td align="center">{$data.unit}</td>
-                                <td align="center">{if condition='$data.gn'}{$data.gn}{else/}0{/if}</td>
+                                <td align="center">{$data.stock_total}</td>
                                 <td align="center">
                                     <a class="layui-btn layui-btn-mini tb_edit" onclick="edit('库存','{:url('stock',['id'=>$data['id']])}','800px','463px')"><i class="fa fa-id-card-o fa-fw"></i> 库存</a>
                                     <a class="layui-btn layui-btn-mini tb_edit" onclick="editFull('编辑产品','{:url('edit',['id'=>$data.id])}')"><i class="fa fa-pencil fa-fw"></i> 编辑</a>
