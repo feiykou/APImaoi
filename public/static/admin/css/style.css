@@ -1,0 +1,134 @@
+
+/* 覆盖layuicss */
+.layui-form .layui-table th{ text-align: center;}
+
+
+/* 分页 */
+.pagination{ font-size:0; text-align: right; margin: 10px 160px 42px;}
+.pagination li{
+    display: inline-block;
+    vertical-align: middle;
+    border: 1px solid #e2e2e2;
+    margin: 0 -1px 5px 0;
+}
+.pagination li a,.pagination li span{
+    height: 28px;
+    line-height: 28px;
+    background-color: #fff;
+    color: #333;
+    font-size: 12px;
+    padding: 0 15px;
+    display: block;
+}
+.pagination li.active span{
+    background-color: #009688;
+    color: #fff;
+}
+.pagination li.disabled{ cursor: no-drop;}
+.pagination li:hover a{
+    color: #009688;
+}
+
+/*删除和编辑按钮*/
+.layui-btn.tb_edit,.layui-btn.tb_del{
+    padding-right: 12px;
+}
+.layui-btn.tb_edit+.layui-btn{
+    margin-left: 5px;
+}
+
+/*状态按钮*/
+.noCon-btn{
+    display: inline-block;
+    background-color: #ddd;
+    font-size: 12px!important;
+    height:22px;
+    line-height: 22px;
+    padding: 0 5px;
+    color: #999;
+    border-radius: 3px;
+}
+
+/*图片上传wrap*/
+.upload-img-wrap{ padding-top: 3px;}
+
+/* 覆盖切换按钮 */
+.layui-form-switch{ height: 18px; line-height: 18px; padding: 0; margin-top: 3px;}
+.layui-form-onswitch i{ left: 24px;}
+.layui-form-switch i{ top: 2px; width: 14px; height: 14px;}
+
+.tb-sort input{ display: inline-block; width: 60px; height: 28px; text-align: center; padding: 0; color:#666;}
+.sel-size-wrap input{ width: 120px;}
+
+.layui-larry-box{ box-sizing: border-box;}
+
+
+/* 上传视频 删除按钮 */
+.video-wrap .video-close{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #999;
+}
+
+/* 主题添加 */
+.layui-table td, .layui-table th{ vertical-align: middle;}
+
+/*产品属性 默认上传图片样式*/
+.file-input-inline{
+    height:40px;
+    line-height: 40px;
+}
+
+.upload-file-wrap{
+    position:relative;
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 12px;
+    background-color: #009688;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: .9;
+}
+.upload-file-wrap input{
+    position:absolute;
+    left: 0;
+    max-width: 108px;
+    top:0;
+    opacity:0;
+    filter:alpha(opacity=0);}
+.file-img-wrap{
+    position: relative;
+}
+.file-img-wrap.none{
+    display: none;
+}
+.file-img-wrap img{
+    width:38px;
+    height: 38px;
+    vertical-align: middle;
+}
+.file-img-mask{
+    display: none;
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background-color: rgba(0,0,0,.6);
+    color: #fff;
+    text-align: center;
+    line-height: 38px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.file-img-wrap:hover .file-img-mask{
+    display: block;
+    transition: all .3s;
+}
