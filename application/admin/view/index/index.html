@@ -5,6 +5,12 @@
     {include file="common/header" /}
     <title>TBAUP</title>
     <link rel="stylesheet" href="__STATIC__/admin/css/app.css" media="all">
+    <style>
+        .layui-layer-tips{
+            display: none;
+        }
+     
+    </style>
 </head>
 
 <body>
@@ -12,29 +18,29 @@
         <div class="layui-header">
             <div class="layui-logo">BIGWU TBAUP</div>
             <div class="layui-logo kit-logo-mobile">K</div>
-            <ul class="layui-nav layui-layout-left kit-nav">
+            <ul class="layui-nav layui-layout-left kit-nav head-nav-tit" kit-navbar>
                 <li class="layui-nav-item"><a href="javascript:;" data-url="{:url('product/lst')}" data-title="商品分类" data-id="101" data-icon="&#xe658;" kit-target>控制台</a></li>
-                <li class="layui-nav-item"><a href="javascript:;">商品管理</a></li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">设置</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">邮件管理</a></dd>
-                        <dd><a href="javascript:;">消息管理</a></dd>
-                        <dd><a href="javascript:;">授权管理</a></dd>
-                    </dl>
-                </li>
+                <li class="layui-nav-item"><a href="javascript:;" kit-target data-url="{:url('product/lst')}"  data-icon="&#xe658;" data-title="商品" data-id="54">商品</a></li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a href="javascript:;">设置</a>-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="javascript:;">邮件管理</a></dd>-->
+                        <!--<dd><a href="javascript:;">消息管理</a></dd>-->
+                        <!--<dd><a href="javascript:;">授权管理</a></dd>-->
+                    <!--</dl>-->
+                <!--</li>-->
             </ul>
             <ul class="layui-nav layui-layout-right kit-nav">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img"> Van
+                        {:session('uname')}
                     </a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">基本资料</a></dd>
-                        <dd><a href="javascript:;">安全设置</a></dd>
-                    </dl>
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="javascript:;">基本资料</a></dd>-->
+                        <!--<dd><a href="javascript:;">安全设置</a></dd>-->
+                    <!--</dl>-->
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
+                <li class="layui-nav-item"><a href="{:url('login/loginOut')}"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a></li>
             </ul>
         </div>
 

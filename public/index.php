@@ -12,7 +12,6 @@
 
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
-
 // 图片路径
 define('IMG_URL', '/upload/images/');
 // 视频路径

@@ -14,6 +14,22 @@ use think\Request;
 
 class Base extends Controller
 {
+    public function _initialize()
+    {
+        $isLogin = $this->isLogin();
+        if(!$isLogin){
+            $this->redirect('/login');
+        }
+    }
+
+
+    protected function isLogin(){
+        if(session('uid') && session('uname')){
+            return true;
+        }
+        return false;
+    }
+
     public function status(){
         // 获取值
         $data = input('param.');
