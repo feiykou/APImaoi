@@ -14,6 +14,7 @@ use app\api\service\WxConfig;
 use app\api\service\WxNotify;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\service\Pay as PayService;
+use app\lib\exception\TokenException;
 
 class Pay extends BaseController
 {
@@ -39,6 +40,7 @@ class Pay extends BaseController
      * 给微信的接口
      */
     public function receiveNotify(){
+        throw new TokenException();
         $notify = new WxNotify();
         $config = new WxConfig();
         $notify->Handle($config);
