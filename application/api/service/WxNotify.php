@@ -23,7 +23,6 @@ class WxNotify extends \WxPayNotify
 {
 
     public function NotifyProcess($data, $config, &$msg){
-        throw new TokenException();
         if($data['result_code'] == 'SUCCESS'){
             $orderNo = $data['out_trade_no'];
             Db::startTrans();

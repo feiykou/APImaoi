@@ -7,5 +7,5 @@
  */
 return [
     'token_salt'    =>      'SADASSasd2234jkms',
-    'pay_back_url'  =>      'http://yue.mgoi.net/api/v1/pay/notify'
+    'pay_back_url'  =>      'https://dc77232d.ngrok.io/tbaup/public/index.php/api/v1/pay/notify'
 ];

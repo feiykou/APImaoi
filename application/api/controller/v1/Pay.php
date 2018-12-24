@@ -15,6 +15,9 @@ use app\api\service\WxNotify;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\service\Pay as PayService;
 use app\lib\exception\TokenException;
+use think\Log;
+
+Loader::import('WxPay.WxPay',EXTEND_PATH, '.Api.php');
 
 class Pay extends BaseController
 {
@@ -39,38 +42,39 @@ class Pay extends BaseController
     /*
      * 给微信的接口
      */
-    public function receiveNotify(){
-        throw new TokenException();
-        $notify = new WxNotify();
+//    public function receiveNotify(){
+//        throw new TokenException();
+//        $notify = new WxNotify();
+//        $config = new WxConfig();
+//        $notify->Handle($config);
+//    }
+
+
+    public function redirectNotify()
+    {
         $config = new WxConfig();
-        $notify->Handle($config);
+        var_dump(1111);
+//        $notify = new WxNotify();
+//        $notify->handle($config);
     }
 
+    public function notifyConcurrency()
+    {
+        $notify = new WxNotify();
+        $notify->handle();
+    }
 
-//    public function redirectNotify()
-//    {
-//        $notify = new WxNotify();
-//        $notify->handle();
-//    }
-//
-//    public function notifyConcurrency()
-//    {
-//        $notify = new WxNotify();
-//        $notify->handle();
-//    }
-//
-//    public function receiveNotify()
-//    {
-////        $xmlData = file_get_contents('php://input');
-////        Log::error($xmlData);
-////        $notify = new WxNotify();
-////        $notify->handle();
+    public function receiveNotify()
+    {
 //        $xmlData = file_get_contents('php://input');
-//        $result = curl_post_raw('http://tbaup.cn/api/v1/pay/re_notify?XDEBUG_SESSION_START=13133',
-//            $xmlData);
-////        return $result;
-////        Log::error($xmlData);
-//    }
+//        Log::error($xmlData);
+//        $notify = new WxNotify();
+//        $notify->handle();
+        $xmlData = file_get_contents('php://input');
+        $result = curl_post_raw('http:/tbaup.cn/api/v1/pay/re_notify',
+            $xmlData);
+        return $result;
+    }
 
 
 }
