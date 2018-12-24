@@ -9,6 +9,7 @@
 namespace app\api\service;
 use app\api\model\ProductStock;
 use app\lib\enum\OrderStatusEnum;
+use app\lib\exception\TokenException;
 use think\Db;
 use think\Exception;
 use think\Loader;
@@ -22,6 +23,7 @@ class WxNotify extends \WxPayNotify
 {
 
     public function NotifyProcess($data, $config, &$msg){
+        throw new TokenException();
         if($data['result_code'] == 'SUCCESS'){
             $orderNo = $data['out_trade_no'];
             Db::startTrans();
