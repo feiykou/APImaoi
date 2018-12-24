@@ -20,7 +20,8 @@ Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 
 class WxNotify extends \WxPayNotify
 {
-    public function NotifyProcess($data, &$msg){
+
+    public function NotifyProcess($data, $config, &$msg){
         if($data['result_code'] == 'SUCCESS'){
             $orderNo = $data['out_trade_no'];
             Db::startTrans();

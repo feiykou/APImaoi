@@ -10,6 +10,7 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\service\WxConfig;
 use app\api\service\WxNotify;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\service\Pay as PayService;
@@ -39,8 +40,35 @@ class Pay extends BaseController
      */
     public function receiveNotify(){
         $notify = new WxNotify();
-        $notify->Handle();
+        $config = new WxConfig();
+        $notify->Handle($config);
     }
+
+
+//    public function redirectNotify()
+//    {
+//        $notify = new WxNotify();
+//        $notify->handle();
+//    }
+//
+//    public function notifyConcurrency()
+//    {
+//        $notify = new WxNotify();
+//        $notify->handle();
+//    }
+//
+//    public function receiveNotify()
+//    {
+////        $xmlData = file_get_contents('php://input');
+////        Log::error($xmlData);
+////        $notify = new WxNotify();
+////        $notify->handle();
+//        $xmlData = file_get_contents('php://input');
+//        $result = curl_post_raw('http://tbaup.cn/api/v1/pay/re_notify?XDEBUG_SESSION_START=13133',
+//            $xmlData);
+////        return $result;
+////        Log::error($xmlData);
+//    }
 
 
 }
