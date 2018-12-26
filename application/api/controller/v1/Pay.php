@@ -14,10 +14,7 @@ use app\api\service\WxConfig;
 use app\api\service\WxNotify;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\service\Pay as PayService;
-use think\Loader;
 
-
-Loader::import('WxPay.WxPay',EXTEND_PATH, '.Api.php');
 
 class Pay extends BaseController
 {
@@ -42,20 +39,13 @@ class Pay extends BaseController
     /*
      * 给微信的接口
      */
-//    public function receiveNotify(){
-//        throw new TokenException();
-//        $notify = new WxNotify();
-//        $config = new WxConfig();
-//        $notify->Handle($config);
-//    }
-
-
-    public function receiveNotify()
-    {
-        $config = new WxConfig();
+    public function receiveNotify(){
+        var_dump(1111);die;
         $notify = new WxNotify();
+        $config = new WxConfig();
         $notify->Handle($config);
     }
+
 
 //    public function notifyConcurrency()
 //    {
