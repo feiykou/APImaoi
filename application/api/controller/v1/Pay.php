@@ -40,10 +40,10 @@ class Pay extends BaseController
      * 给微信的接口
      */
     public function receiveNotify(){
-        var_dump(1111);die;
         $notify = new WxNotify();
         $config = new WxConfig();
-        $notify->Handle($config);
+        $result = $notify->Handle($config);
+        return $result;
     }
 
 
