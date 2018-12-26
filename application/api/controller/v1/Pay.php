@@ -41,8 +41,8 @@ class Pay extends BaseController
      */
     public function receiveNotify(){
         $notify = new WxNotify();
-        $config = new WxConfig();
-        return $config;
+//        $config = new WxConfig();
+        return $notify;
 //        $notify->Handle($config);
     }
 
