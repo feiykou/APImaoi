@@ -14,8 +14,8 @@ use app\api\service\WxConfig;
 use app\api\service\WxNotify;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\service\Pay as PayService;
-use app\lib\exception\TokenException;
-use think\Log;
+use think\Loader;
+
 
 Loader::import('WxPay.WxPay',EXTEND_PATH, '.Api.php');
 
@@ -50,31 +50,29 @@ class Pay extends BaseController
 //    }
 
 
-    public function redirectNotify()
-    {
-        $config = new WxConfig();
-        var_dump(1111);
-//        $notify = new WxNotify();
-//        $notify->handle($config);
-    }
-
-    public function notifyConcurrency()
-    {
-        $notify = new WxNotify();
-        $notify->handle();
-    }
-
     public function receiveNotify()
     {
-//        $xmlData = file_get_contents('php://input');
-//        Log::error($xmlData);
+        $config = new WxConfig();
+        $notify = new WxNotify();
+        $notify->Handle($config);
+    }
+
+//    public function notifyConcurrency()
+//    {
 //        $notify = new WxNotify();
 //        $notify->handle();
-        $xmlData = file_get_contents('php://input');
-        $result = curl_post_raw('http:/tbaup.cn/api/v1/pay/re_notify',
-            $xmlData);
-        return $result;
-    }
+//    }
+
+//    public function receiveNotify()
+//    {
+////        $xmlData = file_get_contents('php://input');
+////        Log::error($xmlData);
+////        $notify = new WxNotify();
+////        $notify->handle();
+//        $xmlData = file_get_contents('php://input');
+//        $result = curl_post_raw('http:/tbaup.cn/api/v1/pay/re_notify?XDEBUG_SESSION_START=11025',
+//            $xmlData);
+//    }
 
 
 }

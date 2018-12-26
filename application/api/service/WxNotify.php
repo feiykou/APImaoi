@@ -22,7 +22,9 @@ Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 class WxNotify extends \WxPayNotify
 {
 
-    public function NotifyProcess($data, $config, &$msg){
+
+    public function NotifyProcess($objData, $config, &$msg){
+        $data = $objData->GetValues();
         if($data['result_code'] == 'SUCCESS'){
             $orderNo = $data['out_trade_no'];
             Db::startTrans();
@@ -42,18 +44,20 @@ class WxNotify extends \WxPayNotify
                     }
                 }
                 Db::commit();
+
             }catch (Exception $ex){
                 Db::rollback();
                 Log::error($ex);
                 return false;
             }
+            return true;
         }
     }
 
     private function reduceStock($status){
         foreach ($status['pStatusArray'] as $singlePStatus){
             ProductStock::where('id','=',$singlePStatus['stockId'])
-                ->setDec('stock',$singlePStatus['count']);
+                ->setDec('stock_num',$singlePStatus['count']);
         }
     }
 
