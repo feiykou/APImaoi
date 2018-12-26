@@ -18,7 +18,7 @@ use think\Log;
 
 Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 
-class WxNotify extends \WxPayNotify
+class WxNotify
 {
 //    public function NotifyProcess($objData, $config, &$msg){
 //        $data = $objData->GetValues();
