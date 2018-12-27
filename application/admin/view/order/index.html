@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="common/header" /}
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/admin/css/personal.css" media="all">
+</head>
+<body>
+<section class="layui-larry-box">
+    <div class="larry-personal">
+        <div class="layui-tab">
+            <form action="">
+                <!-- 操作日志 -->
+                <div class="layui-form news_list">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>商品名称</th>
+                            <th>商品总数</th>
+                            <th>商品总价格</th>
+                            <th>订单状态</th>
+                            <th>下单时间</th>
+                            <th width="100">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody class="news_content list-box-body">
+                        {volist name="orderData" id="order"}
+                        <tr>
+                            <td align="center">{$order.order_no}</td>
+                            <td align="center">{$order.snap_name}</td>
+                            <td align="center">{$order.total_count}</td>
+                            <td align="center">{$order.total_price}</td>
+                            <td align="center" class="status-item">{:orderStatus($order.status)}</td>
+                            <td align="center">{$order.create_time}</td>
+                            <td align="center">
+                                {if condition="$order.status neq 1"}
+                                    <?php if($order['status'] == 3):?>
+                                        <a class='layui-btn layui-btn-small layui-btn-normal'>查看物流</a>
+                                    <?php else:?>
+                                        <a class="layui-btn layui-btn-mini tb_edit" data-id="{$order.id}" onclick="delivery(this)"><i class="fa fa-pencil fa-fw"></i>发货</a>
+                                    <?php endif;?>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+
+                    <div class="larry-table-page clearfix">
+                        <div class="paging">
+                            {$orderData->render()}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+{include file="common/footer" /}
+<script src="__STATIC__/admin/js/reqApiCommon.js"></script>
+<script type="text/javascript">
+
+    function delivery(obj) {
+       var orderID = $(obj).data('id');
+
+       var params = {
+           url: 'order/delivery?XDEBUG_SESSION_START=16101',
+           type: 'put',
+           data: {id:orderID},
+           sCallback: function (res) {
+               if(res.code.toString().indexOf('2') == 0){
+                  $(obj).parents('tr').find('.status-item span')
+                      .removeClass()
+                      .addClass('layui-btn layui-btn-small layui-btn-normal')
+                      .html('已发货');
+                   $(obj).html('<a class="layui-btn layui-btn-small layui-btn-normal">查看物流</a>');
+                   layer.msg('操作成功!',{icon:1,time:1000});
+               }else{
+                   layer.msg('操作失败!',{icon:1,time:1000});
+               }
+           },
+           eCallback:function(){
+               layer.msg('操作失败!',{icon:1,time:1000});
+           }
+       };
+
+       window.base.getData(params)
+    }
+
+    layui.config({
+        base: '__STATIC__/admin/js/'
+    }).use(['form','layer','element','laypage'],function(){
+        window.layer = layui.layer;
+        var element = layui.element,
+            form = layui.form;
+
+    });
+</script>
+</body>
+</html>

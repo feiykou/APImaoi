@@ -20,8 +20,10 @@ class User extends BaseValidate
     protected $rule = [
         'nickName' => 'require|isNotEmpty',
         'gender' => 'number',
-        'province' => 'require',
-        'city' => 'require',
-        'country' => 'require',
+        'province' => 'isString',
+        'city' => 'isString',
+        'country' => 'isString',
     ];
+
+
 }

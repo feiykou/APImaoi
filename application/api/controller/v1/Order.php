@@ -16,8 +16,10 @@ use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
 use app\api\model\Order as OrderModel;
 use app\api\validate\PagingParameter;
+use app\api\validate\Message as MessageValidate;
 use app\lib\exception\OrderException;
 use app\lib\exception\SuccessMessage;
+
 
 class Order extends BaseController
 {
@@ -112,16 +114,17 @@ class Order extends BaseController
     }
 
     /**
-     * 删除订单
+     * 发送模板消息
      * @url     order/delivery
      * @http    put
      * @param   $id
      * @return  SuccessMessage
      */
-    public function delivery($id){
-        (new IDMustBePositiveInt())->goCheck();
-        $order = new OrderModel();
-        $success = $order->delivery($id);
+    public function delivery(){
+        (new MessageValidate())->goCheck('delivery');
+        $data = input('put.');
+        $order = new OrderService();
+        $success = $order->delivery($data['id'], '/pages/index/index', '');
         if($success){
             return new SuccessMessage();
         }

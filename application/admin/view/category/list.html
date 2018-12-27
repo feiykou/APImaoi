@@ -90,7 +90,6 @@
                 type: 'get',
                 url: url,
                 success: function(data){
-                    console.log(data);
                     if(data.code == 1){
                         layer.close(index);
                         layer.msg('已删除!',{icon:1,time:1000});
@@ -98,7 +97,6 @@
                     }
                 },
                 error:function(data) {
-                    console.log(data.msg);
                 },
             });
         });
@@ -141,7 +139,6 @@
             return false;
         }
         layer.confirm(opts.confirmTip||'确认吗？',function(index){
-            console.log(index);
             $.ajax({
                 url: opts.url,
                 type: opts.method || "POST",
