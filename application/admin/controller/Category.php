@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\admin\validate\CategoryValidate;
 use catetree\Catetree;
+use app\admin\model\Category as CategoryModel;
 
 class Category extends Base
 {
@@ -130,7 +131,7 @@ class Category extends Base
         $catetree = new Catetree();
         $sonids = $catetree->childrenids($id,$this->model);
         $sonids[] = intval($id);
-        $result = db('category')->delete($sonids);
+        $result = CategoryModel::destroy($sonids);
         // 返回状态码
         if($result){
             $this->result($_SERVER['HTTP_REFERER'], 1, '删除完成');

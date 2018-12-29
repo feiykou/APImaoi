@@ -14,6 +14,9 @@ use think\Model;
 class BaseModel extends Model
 {
     protected function prefixImgUrl($value, $data){
+        if(!$value){
+            return $value;
+        }
         $finalUrl = config('APISetting.img_prefix').IMG_URL.$value;
         return $finalUrl;
     }

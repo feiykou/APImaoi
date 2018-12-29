@@ -26,7 +26,7 @@ class OrderPlace extends BaseValidate
 
     protected $singleRule = [
         'product_id' => 'require|isPositiveInteger',
-        'count' => 'require|isPositiveInteger',
+        'counts' => 'require|isPositiveInteger',
         'product_prop_ids'  => 'checkPropIds'
     ];
 

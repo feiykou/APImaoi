@@ -10,16 +10,50 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\validate\CateIDMustBePositiveInt;
 use app\api\validate\Count;
 use app\api\model\Product as ProductModel;
 use app\api\validate\IDMustBePositiveInt;
+use app\api\validate\RescIDMustBePositiveInt;
+use app\lib\exception\CategoryException;
 use app\lib\exception\ProductException;
+use app\api\model\Category as CategoryModel;
+use catetree\Catetree;
 
 class Product extends BaseController
 {
     protected $beforeActionList = [
         'checkSuperScope' => ['only' => 'createOne,deleteOne']
     ];
+
+    public function getProductsByCateID($rescid){
+        (new RescIDMustBePositiveInt())->goCheck();
+        $cateIndexArr = CategoryModel::getRecIndexCate(5, 0);
+        foreach ($cateIndexArr as $k => &$v){
+            $products = ProductModel::getRecIndexCate($rescid,$v['id']);
+            $products = $products->hidden(['product_code','content','type_id','description','weight','unit','stock_total'])
+                ->toArray();
+            $v['product'] = $products;
+        }
+        return $cateIndexArr;
+    }
+
+    public function getProductByCate($cateid){
+        (new CateIDMustBePositiveInt())->goCheck();
+        $catetree = new Catetree();
+        $sonids = $catetree->childrenids($cateid, new CategoryModel());
+        $sonids[] = intval($cateid);
+        $productArr = ProductModel::getProductsByCateID($sonids);
+        if(empty($productArr)){
+            throw new CategoryException([
+                'msg' => '指定分类产品不存在',
+                'errorCode' => 20001
+            ]);
+        }
+        return $productArr;
+    }
+
+
     /**
      * 获取首页推荐产品
      * @url     /product/recoIndex?count=:count

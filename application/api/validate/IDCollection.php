@@ -15,7 +15,6 @@ class IDCollection extends BaseValidate
     // 源码中是没有去处多余空格的判断的
     // 这将导致验证不执行
     protected $rule = [
-
         'ids' => 'require|checkIDs'
     ];
 

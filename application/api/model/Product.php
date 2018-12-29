@@ -49,6 +49,20 @@ class Product extends BaseModel
     }
 
     /*
+     * 获取分类下的产品
+     */
+    public static function getProductsByCateID($cateIdArr=[]){
+        $data = [
+            'category_id' => ['in',$cateIdArr],
+            'on_sale' => 1
+        ];
+        $productData = self::where($data)
+            ->order('create_time desc')
+            ->select();
+        return $productData;
+    }
+
+    /*
      * 获取首页推荐产品
      */
     public static function getIndex($count)
@@ -138,5 +152,24 @@ class Product extends BaseModel
             }
         }
         return $propData;
+    }
+
+    public static function getRecIndexCate($recposId, $cateId){
+        $data = [
+            'recpos_id' => $recposId,
+            'value_type' => 1
+        ];
+        $_cateRes = db('rec_item')->where($data)
+            ->select();
+        $cateIdArr = [];
+        foreach ($_cateRes as $k => $v){
+            array_push($cateIdArr,$v['value_id']);
+        }
+        $data = self::where([
+            'id'=>['in',$cateIdArr],
+            'category_id' => $cateId,
+            'on_sale'=> 1])
+            ->select();
+        return $data;
     }
 }

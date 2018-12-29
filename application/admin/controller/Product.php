@@ -32,7 +32,7 @@ class Product extends Base
             ->join($join)
             ->group('p.id')
             ->order('p.id DESC')
-            ->paginate(6);
+            ->paginate();
         $this->assign([
             'productRes'=>$productRes,
         ]);

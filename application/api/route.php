@@ -10,6 +10,9 @@ Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
 Route::get('api/:version/product/recoIndex', 'api/:version.Product/getRecoIndex');
 Route::get('api/:version/product/:id/detail', 'api/:version.Product/getOne',[],['id'=>'\d+']);
 Route::get('api/:version/product/singleProp', 'api/:version.Product/getSingleProp');
+Route::get('api/:version/product/recoIndexByCate', 'api/:version.Product/getProductsByCateID');
+Route::get('api/:version/product/cateProducts', 'api/:version.Product/getProductByCate');
+
 
 // Token
 Route::post('api/:version/token/user','api/:version.Token/getToken');
@@ -41,4 +44,7 @@ Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
 
 // Message
 //Route::post('api/:version/message/delivery','api/:version.Message/delivery');
+
+Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
+
 

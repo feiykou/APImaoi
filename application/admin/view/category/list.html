@@ -18,7 +18,7 @@
 			<div class="layui-form-mid layui-word-aux">本页面刷新后除新添加的文章外所有操作无效，关闭页面所有数据重置</div>
 		</div>
 	</blockquote>
-            <form action="" method="post">
+            <form action="lst?XDEBUG_SESSION_START=11472" method="post">
 		         <!-- 操作日志 -->
                 <div class="layui-form news_list">
                      <table class="layui-table">
@@ -84,7 +84,7 @@
 
     /*产品-删除*/
     function product_del(obj,id){
-        var url = "{:url('del')}?id="+id;
+        var url = "{:url('del')}?id="+id+"&XDEBUG_SESSION_START=11511";
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'get',

@@ -15,12 +15,12 @@
                     <table class="layui-table">
                         <thead>
                         <tr>
-                            <th>订单号</th>
+                            <th width="200">订单号</th>
                             <th>商品名称</th>
-                            <th>商品总数</th>
-                            <th>商品总价格</th>
-                            <th>订单状态</th>
-                            <th>下单时间</th>
+                            <th width="60">商品总数</th>
+                            <th width="80">商品总价格</th>
+                            <th width="100">订单状态</th>
+                            <th width="200">下单时间</th>
                             <th width="100">操作</th>
                         </tr>
                         </thead>
@@ -28,7 +28,7 @@
                         {volist name="orderData" id="order"}
                         <tr>
                             <td align="center">{$order.order_no}</td>
-                            <td align="center">{$order.snap_name}</td>
+                            <td>{$order.snap_name}</td>
                             <td align="center">{$order.total_count}</td>
                             <td align="center">{$order.total_price}</td>
                             <td align="center" class="status-item">{:orderStatus($order.status)}</td>
@@ -65,12 +65,13 @@
 
     function delivery(obj) {
        var orderID = $(obj).data('id');
-
+       var index = layer.load(2);
        var params = {
-           url: 'order/delivery?XDEBUG_SESSION_START=16101',
+           url: 'order/delivery',
            type: 'put',
            data: {id:orderID},
            sCallback: function (res) {
+               layer.close(index);
                if(res.code.toString().indexOf('2') == 0){
                   $(obj).parents('tr').find('.status-item span')
                       .removeClass()
@@ -79,10 +80,16 @@
                    $(obj).html('<a class="layui-btn layui-btn-small layui-btn-normal">查看物流</a>');
                    layer.msg('操作成功!',{icon:1,time:1000});
                }else{
-                   layer.msg('操作失败!',{icon:1,time:1000});
+                   if(res.msg){
+                       layer.msg(res.msg,{icon:1,time:1000});
+                   }else{
+                       layer.msg('操作失败!',{icon:1,time:1000});
+                   }
+
                }
            },
            eCallback:function(){
+               layer.close(index);
                layer.msg('操作失败!',{icon:1,time:1000});
            }
        };

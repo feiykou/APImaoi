@@ -129,9 +129,9 @@ class Order
             $product = $this->products[$i];
             $oProduct = $this->oProducts[$i];
 
-            $pStatus = $this->snapProduct($product, $oProduct['count']);
+            $pStatus = $this->snapProduct($product, $oProduct['counts']);
             $snap['orderPrice'] += $pStatus['totalPrice'];
-            $snap['totalCount'] += $pStatus['count'];
+            $snap['totalCount'] += $pStatus['counts'];
             array_push($snap['pStatus'], $pStatus);
         }
         return $snap;
@@ -143,7 +143,7 @@ class Order
             'id' => null,
             'name' => null,
             'main_img_url' => null,
-            'count' => $oCount,
+            'counts' => $oCount,
             'totalPrice' => 0,
             'price' => 0
         ];
@@ -185,7 +185,7 @@ class Order
         foreach ($this->oProducts as $oProducts){
             $pStatus = $this->getProductStatus(
                 $oProducts['product_id'],
-                $oProducts['count'],
+                $oProducts['counts'],
                 $oProducts['product_prop_ids'],
                 $this->products);
 
@@ -203,7 +203,7 @@ class Order
         $pStatus = [
             'id' => null,
             'haveStock' => false,
-            'count' => 0,
+            'counts' => 0,
             'name' => '',
             'totalPrice' => 0
         ];
@@ -229,7 +229,7 @@ class Order
             $pStatus['prop_value'] = $product['product_prop'];
             $pStatus['prop_ids'] = $oPropIds;
             $pStatus['stockId'] = $product['stockId'];
-            $pStatus['count'] = $oCount;
+            $pStatus['counts'] = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
             if($product['stock_num'] - $oCount >= 0){
                 $pStatus['haveStock'] = true;
@@ -318,7 +318,7 @@ class Order
         if(!$order){
             throw new OrderException();
         }
-        if($order->status != OrderStatusEnum::PAID){
+        if($order->status != OrderStatusEnum::PAID && $order->status != OrderStatusEnum::PAID_BUT_OUT_OF){
             throw new OrderException([
                 'msg' => '还没付款呢，想干嘛？ 或者你已经更新过订单了，不要再刷了',
                 'errorCode' => 80002,
