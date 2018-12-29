@@ -7,5 +7,5 @@
  */
 return [
     'token_salt'    =>      'SADASSasd2234jkms',
-    'pay_back_url'  =>      'https://yue.mgoi.net/api/v1/pay/notify'
+    'pay_back_url'  =>      'http://feiykou.free.idcfengye.com/tbaup/public/index.php/api/v1/pay/notify'
 ];

@@ -39,7 +39,7 @@ class Pay extends BaseController
     /*
      * 给微信的接口
      */
-    public function receiveNotify(){
+    public function redirectNotify(){
         $notify = new WxNotify();
         $config = new WxConfig();
         $notify->Handle($config);
@@ -52,16 +52,16 @@ class Pay extends BaseController
 //        $notify->handle();
 //    }
 
-//    public function receiveNotify()
-//    {
-////        $xmlData = file_get_contents('php://input');
-////        Log::error($xmlData);
-////        $notify = new WxNotify();
-////        $notify->handle();
+    public function receiveNotify()
+    {
 //        $xmlData = file_get_contents('php://input');
-//        $result = curl_post_raw('http:/tbaup.cn/api/v1/pay/re_notify?XDEBUG_SESSION_START=11025',
-//            $xmlData);
-//    }
+//        Log::error($xmlData);
+//        $notify = new WxNotify();
+//        $notify->handle();
+        $xmlData = file_get_contents('php://input');
+        $result = curl_post_raw('http:/tbaup.cn/api/v1/pay/re_notify?XDEBUG_SESSION_START=12021',
+            $xmlData);
+    }
 
 
 }

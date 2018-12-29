@@ -54,7 +54,7 @@ class WxNotify extends \WxPayNotify
     private function reduceStock($status){
         foreach ($status['pStatusArray'] as $singlePStatus){
             ProductStock::where('id','=',$singlePStatus['stockId'])
-                ->setDec('stock_num',$singlePStatus['count']);
+                ->setDec('stock_num',$singlePStatus['counts']);
         }
     }
 
