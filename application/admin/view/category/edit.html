@@ -123,6 +123,20 @@
             }
         });
 
+        // 删除上传图片
+        cancelImg(function ($obj) {
+            var imgId = $obj.data('imgid');
+            if(imgId){
+                $.ajax({
+                    url: '{:url("ajaxDelPic")}',
+                    type: 'POST',
+                    data: {
+                        id: imgId
+                    }
+                });
+            }
+        });
+
         //监听提交
         form.on('submit(demo1)', function(data) {
             var formDom = data.form;
