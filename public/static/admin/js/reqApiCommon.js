@@ -1,5 +1,5 @@
 window.base={
-    g_restUrl:'http://tbaup.cn/api/v1/',
+    g_restUrl:'https://yue.tbaup.net/api/v1/',
 
     getData:function(params){
         console.log(params)
