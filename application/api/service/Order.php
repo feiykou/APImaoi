@@ -52,7 +52,7 @@ class Order
         $this->products = $this->getProductsByOrder($oProducts);
         $status = $this->getOrderStatus();
         if(!$status['pass']){
-            $status = -1;
+            $status['order_id'] = -1;
             return $status;
         }
         $orderSnap = $this->snapOrder();
