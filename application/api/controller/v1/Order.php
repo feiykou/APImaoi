@@ -17,6 +17,7 @@ use app\api\validate\OrderPlace;
 use app\api\model\Order as OrderModel;
 use app\api\validate\PagingParameter;
 use app\api\validate\Message as MessageValidate;
+use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\SuccessMessage;
 
@@ -26,7 +27,7 @@ class Order extends BaseController
 
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
-        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
+        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser,remove,cancel'],
         'checkSuperScope' => ['only' => 'getSummary']
     ];
     /**
@@ -82,7 +83,7 @@ class Order extends BaseController
                 'data' => []
             ];
         }
-        $data = $pagingOrders->hidden(['snap_items', 'snap_address','prepay_id'])
+        $data = $pagingOrders->hidden(['snap_address','prepay_id'])
             ->toArray();
         return $data;
     }
@@ -129,4 +130,25 @@ class Order extends BaseController
             return new SuccessMessage();
         }
     }
+
+
+    public function remove($id){
+        (new IDMustBePositiveInt())->goCheck($id);
+        return $this->changeOrderStatus($id, OrderStatusEnum::REMOVE);
+    }
+
+    public function cancel($id){
+        (new IDMustBePositiveInt())->goCheck($id);
+        return $this->changeOrderStatus($id, OrderStatusEnum::CANCEL);
+    }
+
+    private function changeOrderStatus($id,$status){
+        $uid = TokenService::getCurrentUid();
+        $result = OrderModel::removeOrder($uid,$id,$status);
+        if(!$result){
+            throw new OrderException();
+        }
+        return new SuccessMessage();
+    }
+
 }

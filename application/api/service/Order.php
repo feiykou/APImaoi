@@ -55,7 +55,8 @@ class Order
             $status['order_id'] = -1;
             return $status;
         }
-        $orderSnap = $this->snapOrder();
+
+        $orderSnap = $this->snapOrder($status);
         $status = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
@@ -74,6 +75,7 @@ class Order
             $order->total_count = $snap['totalCount'];
             $order->snap_img = $snap['snapImg'];
             $order->snap_name = $snap['snapName'];
+            $order->snap_prop_val = $snap['snap_prop_val'];
             $order->snap_address = $snap['snapAddress'];
             $order->snap_items = json_encode($snap['pStatus']);
             $order->save();
@@ -110,7 +112,7 @@ class Order
     }
 
     // 预检测并生成订单快照
-    private function snapOrder(){
+    private function snapOrder($status){
         // status可以单独定义一个类
         $snap = [
             'orderPrice' => 0,
@@ -118,34 +120,50 @@ class Order
             'pStatus' => [],
             'snapAddress' => json_encode($this->getUserAddress()),
             'snapName' => $this->products[0]['name'],
-            'snapImg' => $this->products[0]['main_img_url']
+            'snapImg' => $this->products[0]['main_img_url'],
+            'snap_prop_val' => ''
         ];
 
         if(count($this->products) > 1){
             $snap['snapName'] .= '等';
         }
 
+        if(!empty($status['pStatusArray'])){
+            $statusArray = $status['pStatusArray'];
+        }else{
+            $statusArray = [];
+        }
+
         for($i=0; $i < count($this->products); $i++){
             $product = $this->products[$i];
             $oProduct = $this->oProducts[$i];
+            if(empty($statusArray[$i]) && !array_key_exists('prop_value',$statusArray[$i]) && !array_key_exists('prop_ids',$statusArray[$i])){
+                $status = null;
+            }else{
+                $status = $statusArray[$i];
+                $snap['snap_prop_val'] = $statusArray[0]['prop_value'];
+            }
 
-            $pStatus = $this->snapProduct($product, $oProduct['counts']);
+            $pStatus = $this->snapProduct($product, $oProduct['counts'], $status);
             $snap['orderPrice'] += $pStatus['totalPrice'];
             $snap['totalCount'] += $pStatus['counts'];
+
             array_push($snap['pStatus'], $pStatus);
         }
         return $snap;
     }
 
     // 单个商品订单
-    private function snapProduct($product, $oCount){
+    private function snapProduct($product, $oCount, $status){
         $pStatus = [
             'id' => null,
             'name' => null,
             'main_img_url' => null,
             'counts' => $oCount,
             'totalPrice' => 0,
-            'price' => 0
+            'price' => 0,
+            'prop_value' => null,
+            'prop_ids' => null
         ];
 
         // 以服务器价格为准，生成订单
@@ -154,6 +172,11 @@ class Order
         $pStatus['main_img_url'] = $product['main_img_url'];
         $pStatus['price'] = $product['price'];
         $pStatus['id'] = $product['id'];
+        if($status){
+            $pStatus['prop_value'] = $status['prop_value'];
+            $pStatus['prop_ids'] = $status['prop_ids'];
+        }
+
         return $pStatus;
     }
 

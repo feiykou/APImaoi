@@ -27,4 +27,10 @@ class OrderStatusEnum
 
     // 已处理PAID_BUT_OUT_OF
     const HANDLED_OUT_OF = 5;
+
+    // 已取消
+    const CANCEL = 6;
+
+    // 已删除
+    const REMOVE = 0;
 }
