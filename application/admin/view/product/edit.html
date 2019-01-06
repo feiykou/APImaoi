@@ -43,15 +43,15 @@
                         <label class="layui-form-label">上传主图</label>
                         <div class="layui-input-block upload-img-wrap">
                             {Uploader:webuploader btnVal="上传图片"}
-                            {if condition="$productData.main_img_url neq ''"}
                             <ul class="filelist filelist-exist clearfix">
-                                <li class="state-complete" data-src="{$productData.main_img_url}">
-                                    <p class="imgWrap"><img src="__IMGSRC__{$productData.main_img_url}" width="110" height="110"></p>
+                                <?php foreach($productData['main_img_url'] as $k=>$v):?>
+                                <li class="state-complete" data-src="{$v}">
+                                    <p class="imgWrap"><img src="__IMGSRC__{$v}" width="110" height="110"></p>
                                     <div class="file-panel"><span class="cancel">删除</span></div>
                                     <span class="success"></span>
                                 </li>
+                                <?php endforeach;?>
                             </ul>
-                            {/if}
                             {/Uploader:webuploader}
                         </div>
                     </div>
@@ -353,7 +353,7 @@
 
     feiy_upload.init({
         server: config.upload_server,
-        fileNumLimit: 1
+        fileNumLimit: 2
     });
     feiy_upload.init({
         wrap: $("#productImgs"),
@@ -375,7 +375,7 @@
         var $uploader = $("#uploader .filelist > li");
         var $productImgs = $("#productImgs .filelist > li");
         setTimeout(function(){
-            setNoDrop($uploader,1);
+            setNoDrop($uploader,2);
             setNoDrop($productImgs,10);
         },500);
     }

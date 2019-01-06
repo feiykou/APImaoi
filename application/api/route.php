@@ -13,6 +13,9 @@ Route::get('api/:version/product/singleProp', 'api/:version.Product/getSinglePro
 Route::get('api/:version/product/recoIndexByCate', 'api/:version.Product/getProductsByCateID');
 Route::get('api/:version/product/cateProducts', 'api/:version.Product/getProductByCate');
 
+// 微信
+Route::put('api/:version/wx/wxcode', 'api/:version.WxController/wxcode');
+
 
 // Token
 Route::post('api/:version/token/user','api/:version.Token/getToken');
@@ -49,5 +52,7 @@ Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
 //Route::post('api/:version/message/delivery','api/:version.Message/delivery');
 
 Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
+Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
+
 
 

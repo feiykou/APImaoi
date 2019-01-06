@@ -46,7 +46,7 @@
                                 <td align="center">{$data.id}</td>
                                 <td align="center">{$data.name}</td>
                                 <td align="center">{$data.product_code}</td>
-                                <td align="center">{if condition="$data['main_img_url'] neq ''"}<a target="_blank" href="__IMGSRC__{$data.main_img_url}"><img src="__IMGSRC__{$data.main_img_url}" height="30"></a>{else /}暂无主图{/if}</td>
+                                <td align="center">{if condition="$data['main_img_url'] neq ''"}<a target="_blank" href="__IMGSRC__{:explode(';',$data.main_img_url)[0]}"><img src="__IMGSRC__{:explode(';',$data.main_img_url)[0]}" height="30"></a>{else /}暂无主图{/if}</td>
                                 <td align="center">{$data.market_price}</td>
                                 <td align="center">{$data.price}</td>
                                 <td align="center">{if condition="$data['on_sale'] eq 1"}已上架{else /}未上架{/if}</td>

@@ -45,7 +45,15 @@ class Product extends BaseModel
     }
 
     public function getMainImgUrlAttr($value,$data){
-        return $this->prefixImgUrl($value, $data);
+        $arr = explode(';',$value);
+        foreach ($arr as &$val){
+            $val = $this->prefixImgUrl($val, $data);
+        }
+        return $arr;
+    }
+
+    public function getWxCodeAttr($value,$data){
+        return $this->prefixWxCodeUrl($value, $data);
     }
 
     /*
@@ -65,12 +73,12 @@ class Product extends BaseModel
     /*
      * 获取首页推荐产品
      */
-    public static function getIndex($count)
+    public static function getIndex($rescid, $count)
     {
         // 获取首页推荐产品id
         $_recoIndexIds = db('rec_item')->where([
             'value_type' => 1,
-            'recpos_id'  => 6
+            'recpos_id'  => $rescid
         ])->field('value_id')->select();
         $recoIndexIds = [];
         foreach ($_recoIndexIds as $k=>$v){
@@ -82,10 +90,28 @@ class Product extends BaseModel
         ];
         $products = self::limit($count)
             ->where($data)
-            ->order('create_time desc')
+            ->order('create_time')
             ->select();
         return $products;
     }
+
+    /**
+     * 分类筛选
+     * @url
+     * @http
+     * @param $data
+     * @param int $size
+     * @param int $page
+     * @return \think\Paginator
+     */
+    public static function filterCate($data,$size=10,$page=1){
+        $result = self::where($data)
+            ->where('on_sale',1)
+            ->paginate($size, true, ['page' => $page]);
+        return $result;
+    }
+
+
 
     /*
      * 获取产品详情
@@ -171,5 +197,11 @@ class Product extends BaseModel
             'on_sale'=> 1])
             ->select();
         return $data;
+    }
+
+    public static function updateWxCode($id,$url){
+        $result = self::where('id','=',$id)
+            ->update(['wx_code'=>$url]);
+        return $result;
     }
 }

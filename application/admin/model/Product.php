@@ -13,8 +13,9 @@ use think\Model;
 
 class Product extends Model
 {
-
     protected $field = true;
+
+
     protected static function init(){
         Product::beforeInsert(function($products){
             $products->product_code = Product::makeProductNo();

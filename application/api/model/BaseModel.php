@@ -28,4 +28,12 @@ class BaseModel extends Model
         $finalUrl = config('APISetting.img_prefix').VIDEO_URL.$value;
         return $finalUrl;
     }
+
+    protected function prefixWxCodeUrl($value, $data){
+        if(!$value){
+            return $value;
+        }
+        $finalUrl = config('APISetting.img_prefix').WX_URL.$value;
+        return $finalUrl;
+    }
 }

@@ -14,6 +14,7 @@ use app\api\validate\CateIDMustBePositiveInt;
 use app\api\validate\Count;
 use app\api\model\Product as ProductModel;
 use app\api\validate\IDMustBePositiveInt;
+use app\api\validate\ProductRescCount;
 use app\api\validate\RescIDMustBePositiveInt;
 use app\lib\exception\CategoryException;
 use app\lib\exception\ProductException;
@@ -25,6 +26,8 @@ class Product extends BaseController
     protected $beforeActionList = [
         'checkSuperScope' => ['only' => 'createOne,deleteOne']
     ];
+
+
 
     public function getProductsByCateID($rescid){
         (new RescIDMustBePositiveInt())->goCheck();
@@ -62,10 +65,10 @@ class Product extends BaseController
      * @return  false|\PDOStatement|string|\think\Collection
      * @throws  ProductException
      */
-    public function getRecoIndex($count = 15)
+    public function getRecoIndex($rescid= 6,$count = 4)
     {
-        (new Count())->goCheck();
-        $products = ProductModel::getIndex($count);
+        (new ProductRescCount())->goCheck();
+        $products = ProductModel::getIndex($rescid,$count);
         if($products->isEmpty()){
             throw new ProductException();
         }
@@ -74,6 +77,7 @@ class Product extends BaseController
         ]);
         return $products;
     }
+
 
     /**
      * 获取产品详情

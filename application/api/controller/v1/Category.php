@@ -10,8 +10,10 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\validate\CateFilter;
 use app\api\validate\Category as CategoryValidate;
 use app\api\model\Category as CategoryModel;
+use app\api\model\Product as ProductModel;
 use app\api\validate\IDMustBePositiveInt;
 use app\lib\exception\CategoryException;
 use catetree\Catetree;
@@ -28,4 +30,30 @@ class Category extends BaseController
         return $data;
     }
 
+
+    /**
+     * 分类筛选
+     */
+    public function filteCate($size=10,$page=1){
+        $validate = new CateFilter();
+        $validate->goCheck();
+        $data['price'] = input('get.price');
+        $data['category_id'] = input('get.cateid');
+
+        if(intval($data['category_id']) == 0){
+            unset($data['category_id']);
+        }
+        if(strlen($data['price']) == 1 && intval($data['price']) == 0){
+            unset($data['price']);
+        }else{
+            $priceArr = explode('-',$data['price']);
+            $data['price'] = ['between',[intval($priceArr[0]),intval($priceArr[1])]];
+        }
+
+        $resData = ProductModel::filterCate($data,$size,$page);
+        if(!$resData){
+            throw new CategoryException();
+        }
+        return $resData;
+    }
 }

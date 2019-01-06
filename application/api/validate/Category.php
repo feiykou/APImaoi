@@ -13,6 +13,6 @@ class Category extends BaseValidate
 {
     protected $rule = [
         'recposId' => 'require|isPositiveInteger','推荐id必须添加|推荐id必须是正整数',
-        'pid' => 'isPositiveInteger','pid必须是正整数'
+        'pid' => 'isPositiveInteger','pid必须是正整数',
     ];
 }

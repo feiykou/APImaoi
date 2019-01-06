@@ -14,7 +14,6 @@ use think\Exception;
 class WxMessage
 {
     private $sendUrl = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=%s";
-    private $touser;
 
     protected $tplID;
     protected $page;

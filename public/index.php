@@ -16,6 +16,9 @@ define('APP_PATH', __DIR__ . '/../application/');
 define('IMG_URL', '/upload/images/');
 // 视频路径
 define('VIDEO_URL', '/upload/videos/');
+// 二维码路径
+define('WX_URL', '/upload/wxcode/');
+
 
 // 删除文件路径
 define('DEL_FILE_URL', __DIR__);

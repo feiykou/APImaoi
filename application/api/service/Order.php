@@ -169,7 +169,7 @@ class Order
         // 以服务器价格为准，生成订单
         $pStatus['totalPrice'] = $oCount * $product['price'];
         $pStatus['name'] = $product['name'];
-        $pStatus['main_img_url'] = $product['main_img_url'];
+        $pStatus['main_img_url'] = $product['main_img_url'][0];
         $pStatus['price'] = $product['price'];
         $pStatus['id'] = $product['id'];
         if($status){
@@ -317,8 +317,13 @@ class Order
             $proStr = '';
             foreach ($ProductProps as $ppk => $ppv){
                 $proStr .= $ppv['prop_value'].',';
+                if($ppv['img_url']){
+                    $curPropImg = $ppv['img_url'];
+                }
+
             }
             $product['product_prop'] = trim($proStr,',');
+            $product['main_img_url'] = isset($curPropImg)?[$curPropImg]:$product['main_img_url'];
             $productData[] = $product;
         }
         return $productData;

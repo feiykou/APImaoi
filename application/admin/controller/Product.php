@@ -67,6 +67,7 @@ class Product extends Base
         $product_id = intval($id);
         // 获取当前产品基本信息
         $productData = $this->model->find($product_id);
+        $productData['main_img_url'] = explode(';',$productData['main_img_url']);
         // 获取相册
         $productImgData = db('product_image')->where('product_id','=',$product_id)->select();
         // 产品推荐位
