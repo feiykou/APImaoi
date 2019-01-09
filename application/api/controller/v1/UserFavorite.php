@@ -14,6 +14,7 @@ use app\api\validate\Favorite as FavoriteValidate;
 use app\api\service\Token as TokenService;
 use app\api\model\UserFavorite as UserFavoriteModel;
 use app\api\model\User as UserModel;
+use app\api\validate\PagingParameter;
 use app\lib\exception\SuccessMessage;
 use app\lib\exception\UserException;
 
@@ -45,7 +46,11 @@ class UserFavorite extends BaseController
     }
 
     public function flist($page=1,$size=10){
-        $uid = $this->_public();
+        (new PagingParameter())->goCheck();
+        $uid = TokenService::getCurrentUid();
+        if(!UserModel::isExistUser($uid)){
+            throw new UserException();
+        }
         $data = UserFavoriteModel::listFavo($uid,$page,$size);
         return $data;
     }
