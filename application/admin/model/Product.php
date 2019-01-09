@@ -57,15 +57,16 @@ class Product extends Model
             }
 
             // 处理产品图片
-            $img_url_arr = explode(';',$products->product_img_url);
-            if(isset($img_url_arr[0]) && $img_url_arr[0]){
-                foreach ($img_url_arr as $k=>$v){
-                    $data[$k]['img_url'] = $v;
-                    $data[$k]['product_id'] = $productId;
+            if(isset($products['product_img_url'])){
+                $img_url_arr = explode(';',$products->product_img_url);
+                if(isset($img_url_arr[0]) && $img_url_arr[0]){
+                    foreach ($img_url_arr as $k=>$v){
+                        $data[$k]['img_url'] = $v;
+                        $data[$k]['product_id'] = $productId;
+                    }
+                    db('product_image')->insertAll($data);
                 }
-                db('product_image')->insertAll($data);
             }
-
 
             // 处理产品属性
             $prop_i = 0;
@@ -113,11 +114,15 @@ class Product extends Model
             $productId = $products->id;
             // 获取新增商品
             $productData = input('post.');
+
             // 处理推荐位
-            db('rec_item')->where([
-                'value_id' => $productId,
-                'value_type' => 1
-            ])->delete();
+            if(count($productData) > 3){
+                db('rec_item')->where([
+                    'value_id' => $productId,
+                    'value_type' => 1
+                ])->delete();
+            }
+
             if(isset($productData['recpos'])){
                 foreach ($productData['recpos'] as $k=>$v){
                     db('rec_item')->insert([
@@ -129,21 +134,22 @@ class Product extends Model
             }
 
             // 处理产品图片
-            db('product_image')->where('product_id','=',$productId)->delete();
-            $img_url_arr = explode(';',$products->product_img_url);
-            if(isset($img_url_arr[0]) && $img_url_arr[0]){
-                foreach ($img_url_arr as $k=>$v){
-                    $data[$k]['img_url'] = $v;
-                    $data[$k]['product_id'] = $productId;
+            if(isset($products->product_img_url)){
+                db('product_image')->where('product_id','=',$productId)->delete();
+                $img_url_arr = explode(';',$products->product_img_url);
+                if(isset($img_url_arr[0]) && $img_url_arr[0]){
+                    foreach ($img_url_arr as $k=>$v){
+                        $data[$k]['img_url'] = $v;
+                        $data[$k]['product_id'] = $productId;
+                    }
+                    db('product_image')->insertAll($data);
                 }
-                db('product_image')->insertAll($data);
             }
-
-            // 处理会员价格
-            $mpriceArr = $products->mp;
-            // 删除原有会员价格
-            db('member_price')->where('product_id','=',$productId)->delete();
-            if($mpriceArr){
+            if(isset($products->mp)){
+                // 处理会员价格
+                $mpriceArr = $products->mp;
+                // 删除原有会员价格
+                db('member_price')->where('product_id','=',$productId)->delete();
                 foreach ($mpriceArr as $k => $v){
                     if(!trim($v)){
                         continue;
@@ -154,8 +160,8 @@ class Product extends Model
                             'product_id' =>$productId
                         ]);
                     }
-                }
-            }
+                };
+            };
 
             // 处理产品新增属性
             if(isset($productData['product_prop'])){

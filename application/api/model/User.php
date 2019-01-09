@@ -19,6 +19,10 @@ class User extends BaseModel
         return $this->hasMany('UserAddress','user_id','id');
     }
 
+    public function favorite(){
+        return $this->hasMany('user_favorite','user_id','id');
+    }
+
     /*
      * 判断用户是否存在
      * 存在返回uid，不存在返回0
@@ -28,4 +32,28 @@ class User extends BaseModel
                     ->find();
         return $user;
     }
+
+    /**
+     * 判断用户是否存在 uid
+     */
+    public static function isExistUser($uid){
+        $result = User::get($uid);
+        if($result){
+            return true;
+        }
+        return false;
+    }
+
+
+
+    // 添加收藏
+    public static function saveFavo($uid, $data=[]){
+        $result = User::get($uid)
+            ->favorite()
+            ->save($data);
+        return $result;
+    }
+
+
+
 }

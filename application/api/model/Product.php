@@ -56,6 +56,40 @@ class Product extends BaseModel
         return $this->prefixWxCodeUrl($value, $data);
     }
 
+    /**
+     * 获取搜索结果
+     */
+    public static function getSearchResult($params,$size=10,$page=1){
+        $data = [
+            'on_sale' => 1,
+            'name' => ['like','%'.$params['q'].'%']
+        ];
+        $order = [
+            'sort' => 'desc',
+            'create_time' => 'desc'
+        ];
+
+
+        if(isset($params['cateid']) && intval($params['cateid']) != 0){
+            $data['category_id'] = intval($params['cateid']);
+        }
+        if(isset($params['price']) && strlen($params['price']) > 1){
+            $priceArr = explode('-',$params['price']);
+            if(count($priceArr) == 1){
+                $val = $priceArr[0];
+                $priceArr[0] = 0;
+                $priceArr[1] = $val;
+            }
+            $data['price'] = ['between',[intval($priceArr[0]),intval($priceArr[1])]];
+        }
+
+
+        $data = self::where($data)
+            ->order($order)
+            ->paginate($size,false,['page'=>$page]);
+        return $data;
+    }
+
     /*
      * 获取分类下的产品
      */
@@ -90,7 +124,7 @@ class Product extends BaseModel
         ];
         $products = self::limit($count)
             ->where($data)
-            ->order('create_time')
+            ->order(['sort'=>'desc','create_time'=>'desc'])
             ->select();
         return $products;
     }

@@ -40,7 +40,7 @@ class Category extends BaseModel
     // 筛选分类
 
 
-
+    // 获取分类下的所有产品
     public static function getRecIndexCate($recposId, $pid){
         $data = [
             'recpos_id' => $recposId,

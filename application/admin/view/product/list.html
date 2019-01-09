@@ -36,6 +36,7 @@
                                 <th>类型</th>
                                 <th>重量</th>
                                 <th>单位</th>
+                                <th>排序</th>
                                 <th>库存</th>
                                 <th width="240">操作</th>
                             </tr>
@@ -55,6 +56,9 @@
                                 <td align="center">{if condition="$data['type_name']"}{$data.type_name}{else /}未设置{/if}</td>
                                 <td align="center">{$data.weight}</td>
                                 <td align="center">{$data.unit}</td>
+                                <td align="center" class="tc tb-sort">
+                                    <input type="text" name="sort[{$data.id}]" value="{$data.sort}" autocomplete="off" class="layui-input">
+                                </td>
                                 <td align="center">{$data.stock_total}</td>
                                 <td align="center">
                                     <a class="layui-btn layui-btn-mini tb_edit" onclick="edit('库存','{:url('stock',['id'=>$data['id']])}','800px','463px')"><i class="fa fa-id-card-o fa-fw"></i> 库存</a>
@@ -63,6 +67,12 @@
                                 </td>
                             </tr>
                             {/volist}
+                            <tr class="sort-tr-wrap none">
+                                <td colspan="12"></td>
+                                <td align="center"><button type="submit" class="layui-btn layui-btn-mini">排序</button></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         </tbody>
                      </table>
 

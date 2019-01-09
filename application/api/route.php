@@ -6,12 +6,21 @@ use think\Route;
 // Banner
 Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
 
-// Product
+/*
+ * Product
+ */
+// 首页推荐
 Route::get('api/:version/product/recoIndex', 'api/:version.Product/getRecoIndex');
+// 获取产品详情
 Route::get('api/:version/product/:id/detail', 'api/:version.Product/getOne',[],['id'=>'\d+']);
 Route::get('api/:version/product/singleProp', 'api/:version.Product/getSingleProp');
+// 推荐分类产品
 Route::get('api/:version/product/recoIndexByCate', 'api/:version.Product/getProductsByCateID');
+// 产品分类
 Route::get('api/:version/product/cateProducts', 'api/:version.Product/getProductByCate');
+// 搜索
+Route::get('api/:version/product/search', 'api/:version.Product/search');
+
 
 // 微信
 Route::put('api/:version/wx/wxcode', 'api/:version.WxController/wxcode');
@@ -23,6 +32,13 @@ Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 
 // User 获取用户信息
 Route::post('api/:version/login','api/:version.User/updateUser');
+
+// 收藏
+Route::post('api/:version/favorite/add','api/:version.UserFavorite/add');
+Route::get('api/:version/favorite/list','api/:version.UserFavorite/flist');
+Route::put('api/:version/favorite/delete','api/:version.UserFavorite/delete');
+Route::get('api/:version/favorite/checkFavo','api/:version.UserFavorite/checkFavo');
+
 
 // Address
 Route::put('api/:version/address/:id/delete','api/:version.Address/delete',[],['id'=>'\d+']);

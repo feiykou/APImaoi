@@ -23,6 +23,14 @@ class Product extends Base
     }
 
     public function lst(){
+
+        if(request()->isPost()){
+            $tree = new Catetree();
+            $data=input('post.');
+            $tree->cateSort($data['sort'],$this->model);
+            $this->success('排序成功！',url('lst'),'',1);
+        }
+
         $join = [
             ['category c','p.category_id=c.id','LEFT'],
             ['type t', 'p.type_id=t.id','LEFT']
@@ -31,7 +39,7 @@ class Product extends Base
             ->field('p.*,c.cate_name,t.name as type_name')
             ->join($join)
             ->group('p.id')
-            ->order('p.id DESC')
+            ->order(['sort' => 'desc','p.id'=>'DESC'])
             ->paginate();
         $this->assign([
             'productRes'=>$productRes,

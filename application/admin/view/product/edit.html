@@ -353,7 +353,7 @@
 
     feiy_upload.init({
         server: config.upload_server,
-        fileNumLimit: 2
+        fileNumLimit: 3
     });
     feiy_upload.init({
         wrap: $("#productImgs"),
@@ -375,7 +375,7 @@
         var $uploader = $("#uploader .filelist > li");
         var $productImgs = $("#productImgs .filelist > li");
         setTimeout(function(){
-            setNoDrop($uploader,2);
+            setNoDrop($uploader,3);
             setNoDrop($productImgs,10);
         },500);
     }
