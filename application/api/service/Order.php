@@ -95,9 +95,9 @@ class Order
             $orderProduct->saveAll($this->oProducts);
 
             // 修改优惠券使用状态
-            if($snap['coupon_price']){
-                CouponsTaken::updateStatus($this->uid,$this->couponId);
-            }
+//            if($snap['coupon_price']){
+//                CouponsTaken::updateStatus($this->uid,$this->couponId);
+//            }
 
             Db::commit();
             return [
