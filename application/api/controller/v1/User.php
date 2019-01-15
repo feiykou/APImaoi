@@ -24,13 +24,13 @@ class User extends BaseController
             $validate->goCheck();
 
             $uid = TokenService::getCurrentUid();
-            $user = UserModel::get($uid);
-            if(!$user){
-                throw new UserException([
-                    'code'  =>  404,
-                    'msg'   =>  '用户创建失败',
-                    'errorCode' =>  60003
-                ]);
+                $user = UserModel::get($uid);
+                if(!$user){
+                    throw new UserException([
+                        'code'  =>  404,
+                        'msg'   =>  '用户创建失败',
+                        'errorCode' =>  60003
+                    ]);
             }
 
             $data = input('post.');
@@ -45,7 +45,7 @@ class User extends BaseController
             }
             return json(new SuccessMessage(),201);
         }
-
-
     }
+
+
 }

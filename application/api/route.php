@@ -25,20 +25,23 @@ Route::get('api/:version/product/search', 'api/:version.Product/search');
 // 微信
 Route::put('api/:version/wx/wxcode', 'api/:version.WxController/wxcode');
 
-
 // Token
 Route::post('api/:version/token/user','api/:version.Token/getToken');
 Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 
 // User 获取用户信息
 Route::post('api/:version/login','api/:version.User/updateUser');
+Route::post('api/:version/user/commentAdd','api/:version.UserComment/addComment');
+Route::get('api/:version/product/comment', 'api/:version.UserComment/productComments');
+Route::get('api/:version/user/comment', 'api/:version.UserComment/UserComments');
+
+
 
 // 收藏
 Route::post('api/:version/favorite/add','api/:version.UserFavorite/add');
 Route::get('api/:version/favorite/list','api/:version.UserFavorite/flist');
 Route::put('api/:version/favorite/delete','api/:version.UserFavorite/delete');
 Route::get('api/:version/favorite/checkFavo','api/:version.UserFavorite/checkFavo');
-
 
 // Address
 Route::put('api/:version/address/:id/delete','api/:version.Address/delete',[],['id'=>'\d+']);
@@ -69,6 +72,20 @@ Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
 
 Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
 Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
+
+
+// 上传和删除文件
+Route::post('api/:version/uploadImg', 'api/BaseController/uploadImg');
+Route::delete('api/:version/deleteFile', 'api/BaseController/delFile');
+
+
+// 卡劵
+//Route::get('api/:version/card/ticket','api/:version.CardCoupon/getticket');
+//Route::get('api/:version/card/addCard','api/:version.CardCoupon/addCard');
+Route::get('api/:version/couponsTaken/list','api/:version.Coupons/getCoupons');
+Route::get('api/:version/couponsTaken/add','api/:version.Coupons/receiveCoupon');
+
+
 
 
 

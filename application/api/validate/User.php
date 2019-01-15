@@ -23,6 +23,7 @@ class User extends BaseValidate
         'province' => 'isString',
         'city' => 'isString',
         'country' => 'isString',
+        'avatar_img' => 'isString'
     ];
 
 

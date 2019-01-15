@@ -33,4 +33,10 @@ class OrderStatusEnum
 
     // 已删除
     const REMOVE = 0;
+
+    // 确认收货
+    const SUREDELIVERY = 7;
+
+    // 已评价
+    const COMMENT = 8;
 }

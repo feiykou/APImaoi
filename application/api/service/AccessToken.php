@@ -42,19 +42,19 @@ class AccessToken
         if(!empty($token['errcode'])){
             throw new Exception($token['errmsg']);
         }
-        $this->saveToCache($token);
+        $this->saveToCache($token['access_token']);
         return $token['access_token'];
     }
 
     private function getFromCache(){
         $token = cache(self::TOKEN_CACHED_KEY);
         if(!$token){
-            return $token;
+            return null;
         }
-        return null;
+        return $token;
     }
 
     public function saveToCache($token){
-        cache(self::TOKEN_CACHED_KEY,$token,self::TOKEN_EXPIRE_IN);
+        cache(self::TOKEN_CACHED_KEY, $token,self::TOKEN_EXPIRE_IN);
     }
 }

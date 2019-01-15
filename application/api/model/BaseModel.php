@@ -36,4 +36,12 @@ class BaseModel extends Model
         $finalUrl = config('APISetting.img_prefix').WX_URL.$value;
         return $finalUrl;
     }
+
+    protected function prefixAPIUrl($value, $data){
+        if(!$value){
+            return $value;
+        }
+        $finalUrl = config('APISetting.img_prefix').API_URL.$value;
+        return $finalUrl;
+    }
 }

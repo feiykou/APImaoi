@@ -57,7 +57,7 @@ class Order extends BaseModel
         return $pagingData ;
     }
 
-    public static function removeOrder($uid,$id,$status=1){
+    public static function changeOrderStatus($uid,$id,$status=1){
         $data = [
             'id' => $id,
             'user_id' => $uid,
@@ -65,4 +65,6 @@ class Order extends BaseModel
         $result = self::where($data)->update(['status' => $status]);
         return $result;
     }
+
+
 }

@@ -247,7 +247,7 @@ layui.use(['form','layer','jquery'],function(){
         }
         var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.5});
         $.ajax({
-            url: url+'?'+status_name+'='+status+'&attr='+status_name,
+            url: url+'&'+status_name+'='+status+'&attr='+status_name,
             success: function(res){
                 layer.close(index);
                 layer.msg(res.msg);

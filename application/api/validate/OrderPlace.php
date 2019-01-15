@@ -17,7 +17,8 @@ class OrderPlace extends BaseValidate
 {
     protected $rule = [
         'addressId' => 'require|isPositiveInteger',
-        'products' => 'checkProducts'
+        'products' => 'checkProducts',
+        'couponId' => 'isPositiveInteger'
     ];
 
     protected $message = [

@@ -18,6 +18,8 @@ define('IMG_URL', '/upload/images/');
 define('VIDEO_URL', '/upload/videos/');
 // 二维码路径
 define('WX_URL', '/upload/wxcode/');
+// 二维码路径
+define('API_URL', '/upload/API/');
 
 
 // 删除文件路径

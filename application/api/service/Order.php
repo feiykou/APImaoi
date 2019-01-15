@@ -21,6 +21,8 @@ namespace app\api\service;
  *  2：支付前检测库存
  *  3：支付成功后检测库存
  */
+use app\api\model\Coupons;
+use app\api\model\CouponsTaken;
 use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\ProductProp;
@@ -40,15 +42,17 @@ class Order
     protected $products;
     protected $uid;
     protected $addressId;
+    protected $couponId;
 
     function __construct()
     {
     }
 
-    public function place($uid,$oProducts,$addressId){
+    public function place($uid,$oProducts,$addressId,$couponId){
         $this->uid = $uid;
         $this->oProducts = $oProducts;
         $this->addressId = $addressId;
+        $this->couponId = $couponId;
         $this->products = $this->getProductsByOrder($oProducts);
         $status = $this->getOrderStatus();
         if(!$status['pass']){
@@ -78,6 +82,7 @@ class Order
             $order->snap_prop_val = $snap['snap_prop_val'];
             $order->snap_address = $snap['snapAddress'];
             $order->snap_items = json_encode($snap['pStatus']);
+            $order->coupon_price = $snap['coupon_price'];
             $order->save();
 
             $orderID = intval($order->id);
@@ -87,8 +92,13 @@ class Order
                 $p['order_id'] = $orderID;
             }
             $orderProduct = new OrderProduct;
-            $product = $this->oProducts;
             $orderProduct->saveAll($this->oProducts);
+
+            // 修改优惠券使用状态
+            if($snap['coupon_price']){
+                CouponsTaken::updateStatus($this->uid,$this->couponId);
+            }
+
             Db::commit();
             return [
                 'orderNo' => $orderNo,
@@ -113,14 +123,16 @@ class Order
 
     // 预检测并生成订单快照
     private function snapOrder($status){
+        $couponPrice = $this->getCouponPrice();
         // status可以单独定义一个类
         $snap = [
             'orderPrice' => 0,
             'totalCount' => 0,
             'pStatus' => [],
             'snapAddress' => json_encode($this->getUserAddress()),
+            'coupon_price' => $couponPrice,
             'snapName' => $this->products[0]['name'],
-            'snapImg' => $this->products[0]['main_img_url'],
+            'snapImg' => $this->products[0]['main_img_url'][0],
             'snap_prop_val' => ''
         ];
 
@@ -196,6 +208,20 @@ class Order
             ]);
         }
         return $userAddress->toArray();
+    }
+
+    private function getCouponPrice(){
+        if($this->couponId == 0){
+            return 0;
+        }
+        $data = Coupons::getCouponPrice($this->uid,$this->couponId);
+        if(!$data){
+            new UserException([
+                'msg' => '优惠券无效',
+                'errorCode' => '60008'
+            ]);
+        }
+        return $data[0];
     }
 
     private function getOrderStatus(){

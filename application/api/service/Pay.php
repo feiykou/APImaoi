@@ -42,8 +42,20 @@ class Pay
         if(!$status['pass']){
             return $status;
         }
+        $coupon_price = $this->getCouponPrice();
+        $status['orderPrice'] = round(($status['orderPrice']*100 - intval($coupon_price)*100) / 100,2);
         return $this->makeWxPreOrder($status['orderPrice']);
     }
+
+    public function getCouponPrice(){
+        $coupon_price = OrderModel::where('id',$this->orderID)
+            ->column('coupon_price');
+        if($coupon_price == '0.00'){
+            $coupon_price = 0;
+        }
+        return $coupon_price[0];
+    }
+
 
     private function makeWxPreOrder($totalPrice){
         $openid = Token::getCurrentTokenVar('openid');

@@ -40,9 +40,13 @@ class Order extends BaseController
         (new OrderPlace())->goCheck();
         $oProducts = input('post.products/a');
         $addressId = input('post.addressId');
+        $couponId = input('post.couponId');
+        if(!isset($couponId)){
+            $couponId = 0;
+        }
         $uid = TokenService::getCurrentUid();
         $order = new OrderService();
-        $status = $order->place($uid,$oProducts,$addressId);
+        $status = $order->place($uid,$oProducts,$addressId,$couponId);
         return $status;
     }
 
@@ -144,7 +148,7 @@ class Order extends BaseController
 
     private function changeOrderStatus($id,$status){
         $uid = TokenService::getCurrentUid();
-        $result = OrderModel::removeOrder($uid,$id,$status);
+        $result = OrderModel::changeOrderStatus($uid,$id,$status);
         if(!$result){
             throw new OrderException();
         }

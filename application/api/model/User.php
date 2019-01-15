@@ -23,6 +23,16 @@ class User extends BaseModel
         return $this->hasMany('user_favorite','user_id','id');
     }
 
+    public function comments(){
+        return $this->hasMany('user_comment','user_id','id');
+    }
+
+    public function getAvatarImgAttr($value,$data){
+        return $this->prefixAPIUrl($value, $data);
+    }
+
+
+
     /*
      * 判断用户是否存在
      * 存在返回uid，不存在返回0
@@ -51,6 +61,21 @@ class User extends BaseModel
         $result = User::get($uid)
             ->favorite()
             ->save($data);
+        return $result;
+    }
+
+    /**
+     *
+     * @url
+     * @http
+     * @param $uid
+     * @param array $data
+     * @return int
+     */
+    public static function saveComment($uid, $data =[]){
+        $result = User::get($uid)
+            ->comments()
+            ->saveAll($data);
         return $result;
     }
 
