@@ -3,4 +3,4 @@
 sql
 application/database.php
 runtime
-application/extra
+application/extra/*
