@@ -18,9 +18,17 @@ class Order extends BaseModel
         return $this->belongsTo('User');
     }
 
-    public static function getSummaryByPage($page=1, $size=20){
+    public static function getSummaryByPage($status=-1, $page=1, $size=20){
+        $data = [];
+        if($status != -1){
+            $data = [
+                'status' => $status
+            ];
+        }
+
         $pagingData = self::order('create_time desc')
-            ->paginate($size, '', ['page' => $page]);
+            ->where($data)
+            ->paginate($size, '', ['page' => $page, 'query' => ['status'=>$status]]);
         return $pagingData;
     }
 }

@@ -40,6 +40,15 @@ function orderStatus($status){
         case 4:
             $str = "<span class='layui-btn layui-btn-small layui-btn-danger'>库存不足</span>";
             break;
+        case 6:
+            $str = "<span class='layui-btn layui-btn-small layui-btn-danger'>已取消</span>";
+            break;
+        case 7:
+            $str = "<span class='layui-btn layui-btn-small layui-btn-danger'>已签收</span>";
+            break;
+        case 8:
+            $str = "<span class='layui-btn layui-btn-small layui-btn-danger'>已评价</span>";
+            break;
         default:
             $str = '';
     }

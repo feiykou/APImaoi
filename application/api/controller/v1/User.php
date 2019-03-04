@@ -14,6 +14,7 @@ use app\api\service\Token as TokenService;
 use app\api\validate\User as UserValidate;
 use app\api\model\User as UserModel;
 use app\lib\exception\SuccessMessage;
+use app\lib\exception\TokenException;
 use app\lib\exception\UserException;
 
 class User extends BaseController
@@ -24,13 +25,9 @@ class User extends BaseController
             $validate->goCheck();
 
             $uid = TokenService::getCurrentUid();
-                $user = UserModel::get($uid);
-                if(!$user){
-                    throw new UserException([
-                        'code'  =>  404,
-                        'msg'   =>  '用户创建失败',
-                        'errorCode' =>  60003
-                    ]);
+            $user = UserModel::get($uid);
+            if(!$user){
+                throw new TokenException();
             }
 
             $data = input('post.');
