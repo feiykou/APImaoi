@@ -87,7 +87,7 @@
 
         feiy_upload.init({
             server: config.upload_server,
-            fileNumLimit: 1
+            fileNumLimit: 2
         });
     </script>
     <script>
@@ -112,7 +112,7 @@
                 var formDom = data.form;
                 var cate_img_lists = $("#uploader .filelist > li");
                 var cate_img_url = setUpdateUrl(cate_img_lists);
-                var params = "&cate_img="+cate_img_url;
+                var params = "&cate_img="+cate_img_url;1
                 $.ajax({
                     url: "{:url('save')}",
                     type: "post",

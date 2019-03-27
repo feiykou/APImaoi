@@ -58,13 +58,15 @@
             <label class="layui-form-label">上传图片</label>
             <div class="layui-input-block upload-img-wrap">
                 {Uploader:webuploader btnVal="上传图片"}
-                {if condition="$editData.cate_img neq ''"}
+                {if condition="count($editData.cate_img) >= 1"}
                 <ul class="filelist filelist-exist clearfix">
-                    <li class="state-complete" data-src="{$editData.cate_img}">
-                        <p class="imgWrap"><img src="__IMGSRC__{$editData.cate_img}" width="110" height="110"></p>
+                    <?php foreach($editData['cate_img'] as $v): ?>
+                    <li class="state-complete" data-src="{$v}">
+                        <p class="imgWrap"><img src="__IMGSRC__{$v}" width="110" height="110"></p>
                         <div class="file-panel"><span class="cancel">删除</span></div>
                         <span class="success"></span>
                     </li>
+                    <?php endforeach;?>
                 </ul>
                 {/if}
                 {/Uploader:webuploader}
@@ -103,7 +105,7 @@
 
     feiy_upload.init({
         server: config.upload_server,
-        fileNumLimit: 1
+        fileNumLimit: 2
     });
 </script>
 <script>

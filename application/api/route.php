@@ -18,15 +18,17 @@ Route::get('api/:version/product/singleProp', 'api/:version.Product/getSinglePro
 // 推荐分类产品
 Route::get('api/:version/product/recoIndexByCate', 'api/:version.Product/getProductsByCateID');
 // 产品分类
-Route::get('api/:version/product/cateProducts', 'api/:version.Product/getProductByCate');
+Route::get('api/:version/product/cateProducts/[:cateid]', 'api/:version.Product/getProductByCate');
 // 搜索
 Route::get('api/:version/product/search', 'api/:version.Product/search');
 
 /*
  * 分类
  */
-Route::get('api/:version/category/topCate', 'api/:version.Category/getTopCate');
-Route::get('api/:version/category/sonCate/[:cateid]', 'api/:version.Category/getSonCate');
+Route::get('api/:version/cate/topCate', 'api/:version.Category/getTopCate');
+Route::get('api/:version/cate/sonCate/[:cateid]', 'api/:version.Category/getSonCate');
+Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
+Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
 
 
 
@@ -76,8 +78,6 @@ Route::post('api/:version/pay/re_notify', 'api/:version.Pay/redirectNotify');
 // Message
 //Route::post('api/:version/message/delivery','api/:version.Message/delivery');
 
-Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
-Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
 
 
 // 上传和删除文件

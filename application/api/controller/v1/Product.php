@@ -82,7 +82,7 @@ class Product extends BaseController
      * @return false|\PDOStatement|string|\think\Collection
      * @throws CategoryException
      */
-    public function getProductByCate($cateid){
+    public function getProductByCate($cateid=0){
         (new CateIDMustBePositiveInt())->goCheck();
         if($cateid == 0){
             $productArr = ProductModel::where('on_sale',1)

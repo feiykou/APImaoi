@@ -28,7 +28,11 @@ class Category extends BaseModel
     }
 
     public function getCateImgAttr($value,$data){
-        return $this->prefixImgUrl($value, $data);
+        $arr = explode(';',$value);
+        foreach ($arr as &$val){
+            $val = $this->prefixImgUrl($val, $data);
+        }
+        return $arr;
     }
 
     public static function getProductAndCate($id){
@@ -73,7 +77,7 @@ class Category extends BaseModel
      * 获取分类信息  --- 多个分类
      */
     private static function _getSelCate($ids=[]){
-        $data = self::where('status','=','1')
+        $data = self::where('show_cate','=','1')
             ->field('id,cate_name,cate_img')
             ->order([
                 'sort' => 'desc',
@@ -87,7 +91,7 @@ class Category extends BaseModel
         $cateTree = new Catetree();
         $ids = $cateTree->sonids($cateId, new self());
 
-        $data = null;
+        $data = [];
         if(count($ids) > 0){
             $data = self::_getSelCate($ids);
         }

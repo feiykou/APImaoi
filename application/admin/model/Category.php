@@ -15,6 +15,16 @@ use think\Model;
 class Category extends Model
 {
     protected $field = true;
+
+    protected function getCateImgAttr($val,$data){
+        return $this->handleImgUrl($val);
+    }
+
+    private function handleImgUrl($val){
+        $val = str_replace('\\','/',$val);
+        return explode(';',$val);
+    }
+
     protected static function init()
     {
         self::afterInsert(function ($category){

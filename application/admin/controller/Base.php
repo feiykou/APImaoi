@@ -48,9 +48,9 @@ class Base extends Controller
 
         // 获取控制器
         $model = request()->controller();
-        $result = model($model)->save([
+        $result = model($model)->where('id',intval($data['id']))->update([
             $status => $data[$status]
-        ],['id'=>$data['id']]);
+        ]);
 
 
         if($result){
