@@ -14,6 +14,7 @@ use app\api\validate\CateFilter;
 use app\api\validate\Category as CategoryValidate;
 use app\api\model\Category as CategoryModel;
 use app\api\model\Product as ProductModel;
+use app\api\validate\CateIDMustBePositiveInt;
 use app\api\validate\IDMustBePositiveInt;
 use app\lib\exception\CategoryException;
 use catetree\Catetree;
@@ -66,7 +67,7 @@ class Category extends BaseController
     }
 
     public function getSonCate($id=0){
-        (new IDMustBePositiveInt())->goCheck();
+        (new CateIDMustBePositiveInt())->goCheck();
         if($id == 0){
             $data = $this->getTopCate();
         }else{

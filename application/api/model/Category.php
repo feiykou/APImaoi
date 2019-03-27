@@ -38,15 +38,17 @@ class Category extends BaseModel
         return $data;
     }
 
+    // 获取顶级分类
     public static function getTopCate(){
         $data = self::where('pid',0)
+            ->order([
+                'sort' => 'desc',
+                'id' => 'desc'
+            ])
             ->field('cate_name,id')
             ->select();
         return $data;
     }
-
-    // 筛选分类
-
 
     // 获取分类下的所有产品
     public static function getRecIndexCate($recposId, $pid){
