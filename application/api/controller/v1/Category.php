@@ -66,12 +66,12 @@ class Category extends BaseController
         return $data;
     }
 
-    public function getSonCate($id=0){
+    public function getSonCate($cateid=0){
         (new CateIDMustBePositiveInt())->goCheck();
-        if($id == 0){
+        if($cateid == 0){
             $data = $this->getTopCate();
         }else{
-            $data = CategoryModel::getSonData($id);
+            $data = CategoryModel::getSonData($cateid);
         }
         return $data;
     }

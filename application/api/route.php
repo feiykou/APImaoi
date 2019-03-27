@@ -26,7 +26,7 @@ Route::get('api/:version/product/search', 'api/:version.Product/search');
  * 分类
  */
 Route::get('api/:version/category/topCate', 'api/:version.Category/getTopCate');
-Route::get('api/:version/category/sonCate/[:id]', 'api/:version.Category/getSonCate');
+Route::get('api/:version/category/sonCate/[:cateid]', 'api/:version.Category/getSonCate');
 
 
 
