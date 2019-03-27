@@ -84,10 +84,17 @@ class Product extends BaseController
      */
     public function getProductByCate($cateid){
         (new CateIDMustBePositiveInt())->goCheck();
-        $catetree = new Catetree();
-        $sonids = $catetree->childrenids($cateid, new CategoryModel());
-        $sonids[] = intval($cateid);
-        $productArr = ProductModel::getProductsByCateID($sonids);
+        if($cateid == 0){
+            $productArr = ProductModel::where('on_sale',1)
+                ->field('')
+                ->order('create_time desc')
+                ->select();
+        }else{
+            $catetree = new Catetree();
+            $sonids = $catetree->childrenids($cateid, new CategoryModel());
+            $sonids[] = intval($cateid);
+            $productArr = ProductModel::getProductsByCateID($sonids);
+        }
         if(empty($productArr)){
             throw new CategoryException([
                 'msg' => '指定分类产品不存在',

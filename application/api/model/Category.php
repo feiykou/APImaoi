@@ -9,6 +9,7 @@
 namespace app\api\model;
 
 
+use catetree\Catetree;
 use think\Model;
 
 class Category extends BaseModel
@@ -37,6 +38,13 @@ class Category extends BaseModel
         return $data;
     }
 
+    public static function getTopCate(){
+        $data = self::where('pid',0)
+            ->field('cate_name,id')
+            ->select();
+        return $data;
+    }
+
     // 筛选分类
 
 
@@ -56,6 +64,31 @@ class Category extends BaseModel
             ->order('sort desc')
             ->select();
 
+        return $data;
+    }
+
+    /*
+     * 获取分类信息  --- 多个分类
+     */
+    private static function _getSelCate($ids=[]){
+        $data = self::where('status','=','1')
+            ->field('id,cate_name,cate_img')
+            ->order([
+                'sort' => 'desc',
+                'id' => 'desc'
+            ])->select($ids);
+        return $data;
+    }
+
+
+    public static function getSonData($cateId){
+        $cateTree = new Catetree();
+        $ids = $cateTree->sonids($cateId, new self());
+
+        $data = null;
+        if(count($ids) > 0){
+            $data = self::_getSelCate($ids);
+        }
         return $data;
     }
 }

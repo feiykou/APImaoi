@@ -56,4 +56,22 @@ class Category extends BaseController
         }
         return $resData;
     }
+
+    /**
+     * 获取一级分类
+     */
+    public function getTopCate(){
+        $data = CategoryModel::getTopCate();
+        return $data;
+    }
+
+    public function getSonCate($id=0){
+        (new IDMustBePositiveInt())->goCheck();
+        if($id == 0){
+            $data = $this->getTopCate();
+        }else{
+            $data = CategoryModel::getSonData($id);
+        }
+        return $data;
+    }
 }
