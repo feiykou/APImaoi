@@ -49,7 +49,7 @@ class Category extends BaseModel
                 'sort' => 'desc',
                 'id' => 'desc'
             ])
-            ->field('cate_name,id')
+            ->field('cate_name,id,cate_img')
             ->select();
         return $data;
     }
