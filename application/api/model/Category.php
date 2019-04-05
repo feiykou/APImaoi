@@ -35,12 +35,17 @@ class Category extends BaseModel
         return $arr;
     }
 
+    // 获取分类下的所有上架产品
     public static function getProductAndCate($id){
         $data = self::with(['product' => function($query){
             $query->where('on_sale','=',1);
         }])->where('id',$id)->find();
         return $data;
     }
+
+
+
+
 
     // 获取顶级分类
     public static function getTopCate(){
@@ -54,7 +59,7 @@ class Category extends BaseModel
         return $data;
     }
 
-    // 获取分类下的所有产品
+    // 获取分类下的子类
     public static function getRecIndexCate($recposId, $pid){
         $data = [
             'recpos_id' => $recposId,

@@ -31,6 +31,19 @@ class Category extends BaseController
         return $data;
     }
 
+    // 获取首页推荐顶级分类
+    public static function getIndexRescCate(){
+        $data = CategoryModel::getRecIndexCate(5, 0);
+        foreach ($data as $key => &$val){
+            $sonData = CategoryModel::getRecIndexCate(5, $val['id']);
+            $val['sonData'] = $sonData;
+        }
+        if(!$data){
+            throw new CategoryException();
+        }
+        return $data;
+    }
+
 
     /**
      * 分类筛选
