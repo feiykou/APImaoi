@@ -63,7 +63,7 @@ class Theme extends Model
                     db('rec_item')->insert([
                         'recpos_id' => $v,
                         'value_id' => $themeId,
-                        'value_type' => 2,
+                        'value_type' => 3,
                     ]);
                 }
             }
@@ -91,14 +91,14 @@ class Theme extends Model
                 // 处理推荐位
                 db('rec_item')->where([
                     'value_id' => $themeId,
-                    'value_type' => 2
+                    'value_type' => 3
                 ])->delete();
                 if(isset($themeData['recpos'])){
                     foreach ($themeData['recpos'] as $k=>$v){
                         db('rec_item')->insert([
                             'recpos_id' => $v,
                             'value_id' => $themeId,
-                            'value_type' => 2,
+                            'value_type' => 3,
                         ]);
                     }
                 }
@@ -140,7 +140,7 @@ class Theme extends Model
             // 处理推荐位
             db('rec_item')->where([
                 'value_id' => $themeId,
-                'value_type' => 2
+                'value_type' => 3
             ])->delete();
 
             // 处理产品

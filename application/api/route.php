@@ -32,6 +32,12 @@ Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
 Route::get('api/:version/cate/indexRescCate','api/:version.Category/getIndexRescCate');
 
 
+/**
+ * 主题
+ */
+// 首页推荐
+Route::get('api/:version/theme/recoIndex', 'api/:version.Theme/getRecoIndex');
+
 
 
 // 微信

@@ -35,10 +35,10 @@ class Theme extends Base
     }
 
     public function add(){
-        // 商品推荐位  2:代表主题
+        // 商品推荐位  3:代表主题
         $rescBitArr = config('RescBit');
-        if(isset($rescBitArr[2])){
-            $RecposRes = db('recpos')->where('type','=',2)->select();
+        if(isset($rescBitArr[3])){
+            $RecposRes = db('recpos')->where('type','=',3)->select();
         }else{
             $RecposRes = [];
         }
@@ -71,8 +71,8 @@ class Theme extends Base
 
         // 商品推荐位  2:代表主题
         $rescBitArr = config('RescBit');
-        if(isset($rescBitArr[2])){
-            $RecposRes = db('recpos')->where('type','=',2)->select();
+        if(isset($rescBitArr[3])){
+            $RecposRes = db('recpos')->where('type','=',3)->select();
         }else{
             $RecposRes = [];
         }
