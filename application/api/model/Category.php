@@ -49,7 +49,11 @@ class Category extends BaseModel
 
     // 获取顶级分类
     public static function getTopCate(){
-        $data = self::where('pid',0)
+        $where = [
+            'pid' => 0,
+            'show_cate' => 1
+        ];
+        $data = self::where($where)
             ->order([
                 'sort' => 'desc',
                 'id' => 'desc'

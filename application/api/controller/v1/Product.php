@@ -112,7 +112,7 @@ class Product extends BaseController
      * @param   int $count
      * @return  false|\PDOStatement|string|\think\Collection
      * @throws  ProductException
-     */
+   */
     public function getRecoIndex($rescid= 6,$count = 4)
     {
         (new ProductRescCount())->goCheck();
