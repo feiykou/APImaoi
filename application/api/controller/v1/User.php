@@ -11,6 +11,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\service\Token as TokenService;
+use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\User as UserValidate;
 use app\api\model\User as UserModel;
 use app\lib\exception\SuccessMessage;
@@ -42,6 +43,23 @@ class User extends BaseController
             }
             return json(new SuccessMessage(),201);
         }
+    }
+
+    /**
+     * 获取用户名称
+     * @url   user/:id
+     * @http
+     * @param $id
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws UserException
+     */
+    public function getUserInfo($id){
+        (new IDMustBePositiveInt())->goCheck();
+        $data = UserModel::getUserData($id);
+        if(!$data){
+            throw new UserException();
+        }
+        return $data;
     }
 
 

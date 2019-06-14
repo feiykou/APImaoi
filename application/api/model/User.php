@@ -32,6 +32,17 @@ class User extends BaseModel
     }
 
 
+    /**
+     * 获取用户信息
+     * @url
+     * @http
+     * @param $openid
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
+    public static function getUserData($uid){
+        $result = User::field('nickName')->find($uid);
+        return $result;
+    }
 
     /*
      * 判断用户是否存在

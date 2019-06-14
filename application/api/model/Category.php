@@ -43,10 +43,6 @@ class Category extends BaseModel
         return $data;
     }
 
-
-
-
-
     // 获取顶级分类
     public static function getTopCate(){
         $where = [

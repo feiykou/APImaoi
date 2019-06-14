@@ -49,9 +49,12 @@ Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 
 // User 获取用户信息
 Route::post('api/:version/login','api/:version.User/updateUser');
+Route::get('api/:version/user/:id', 'api/:version.User/getUserInfo',[],['id'=>'\d+']);
 Route::post('api/:version/user/commentAdd','api/:version.UserComment/addComment');
 Route::get('api/:version/product/comment', 'api/:version.UserComment/productComments');
 Route::get('api/:version/user/comment', 'api/:version.UserComment/UserComments');
+
+
 
 // 收藏
 Route::post('api/:version/favorite/add','api/:version.UserFavorite/add');
