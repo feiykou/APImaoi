@@ -79,6 +79,7 @@ Route::get('api/:version/order/by_user','api/:version.Order/getSummaryByUser');
 Route::get('api/:version/order/paginate','api/:version.Order/getSummary');
 Route::put('api/:version/order/cancel','api/:version.Order/cancel');
 Route::put('api/:version/order/remove','api/:version.Order/remove');
+Route::get('api/:version/order/giftOrder','api/:version.Order/findOrder');
 
 
 // Pay

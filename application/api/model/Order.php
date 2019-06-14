@@ -7,8 +7,6 @@
  */
 
 namespace app\api\model;
-
-
 class Order extends BaseModel
 {
 
@@ -26,6 +24,17 @@ class Order extends BaseModel
             return null;
         }
         return json_decode(($value));
+    }
+
+    // 获取礼物订单
+    public static function getGiftOrder($user_id, $order_id){
+        $data = [
+            'user_id' => $user_id,
+            'id' => $order_id,
+            'gift_type' => 1
+        ];
+        $data = self::where($data)->find();
+        return $data;
     }
 
     // 获取当前用户全部订单

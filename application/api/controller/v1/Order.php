@@ -12,12 +12,14 @@ namespace app\api\controller\v1;
 use app\api\controller\BaseController;
 use app\api\service\Token as TokenService;
 use app\api\service\Order as OrderService;
+use app\api\validate\giftOrder;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
 use app\api\model\Order as OrderModel;
 use app\api\validate\PagingParameter;
 use app\api\validate\Message as MessageValidate;
 use app\lib\enum\OrderStatusEnum;
+use app\lib\exception\FailMessage;
 use app\lib\exception\OrderException;
 use app\lib\exception\SuccessMessage;
 
@@ -30,6 +32,21 @@ class Order extends BaseController
         'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser,remove,cancel'],
         'checkSuperScope' => ['only' => 'getSummary']
     ];
+
+
+    /**
+     * 查看订单是否存在
+     */
+    public function findOrder($user_id,$order_id){
+        (new giftOrder())->goCheck();
+        $data = OrderModel::getGiftOrder($user_id,$order_id);
+        if($data){
+            return json(new SuccessMessage(),201);
+        }
+        return json(new FailMessage(),201);
+    }
+
+
     /**
      * 下单
      * @url     /order
