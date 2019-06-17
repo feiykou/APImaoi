@@ -22,6 +22,9 @@ class Theme extends BaseModel
         }
         return $arr;
     }
+    public function getHeadImgUrlAttr($value,$data){
+        return $this->prefixImgUrl($value, $data);
+    }
 
     public function product(){
         return $this->belongsToMany('product','theme_product','product_id','theme_id')->field('id,name,description,main_img_url');
