@@ -52,4 +52,18 @@ class Theme extends BaseModel
             ->select();
         return $result;
     }
+
+    /**
+     * 获取主题详情
+     */
+    public static function getThemeDetail($id){
+        $data = [
+            'id' => $id,
+            'on_sale' => 1
+        ];
+        $products = self::where($data)
+            ->with('product')
+            ->find();
+        return $products;
+    }
 }

@@ -37,7 +37,7 @@ Route::get('api/:version/cate/indexRescCate','api/:version.Category/getIndexResc
  */
 // 首页推荐
 Route::get('api/:version/theme/recoIndex', 'api/:version.Theme/getRecoIndex');
-
+Route::get('api/:version/theme/:id/detail', 'api/:version.Theme/getOne',[],['id'=>'\d+']);
 
 
 // 微信

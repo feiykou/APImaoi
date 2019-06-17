@@ -10,6 +10,7 @@ namespace app\api\controller\v1;
 
 
 use app\api\controller\BaseController;
+use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\ProductRescCount;
 use app\api\model\Theme as ThemeModel;
 use app\lib\exception\ThemeException;
@@ -34,6 +35,27 @@ class Theme extends BaseController
         $themes = $themes->hidden([
             'content', 'head_img_url', 'product.pivot'
         ]);
+        return $themes;
+    }
+
+    /**
+     * 获取主题详情
+     * @url     /theme/:id/detail
+     * @http    get
+     * @param   $id
+     * @return  array|false|\PDOStatement|string|\think\Model
+     * @throws  ThemeException
+     */
+    public function getOne($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
+        $themes = ThemeModel::getThemeDetail($id);
+        $themes = $themes->hidden([
+            'product.pivot', 'main_img_url', 'sort'
+        ]);
+        if(!$themes){
+            throw new ThemeException();
+        }
         return $themes;
     }
 }
