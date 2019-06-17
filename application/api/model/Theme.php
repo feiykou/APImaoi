@@ -27,7 +27,7 @@ class Theme extends BaseModel
     }
 
     public function product(){
-        return $this->belongsToMany('product','theme_product','product_id','theme_id')->field('id,name,description,main_img_url');
+        return $this->belongsToMany('product','theme_product','product_id','theme_id')->field('id,name,description,main_img_url,price');
     }
 
     /*
