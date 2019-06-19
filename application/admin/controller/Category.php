@@ -99,10 +99,10 @@ class Category extends Base
         $data = input('post.');
         $is_exist_id = empty($data['id']);
         // 判断是否存在同名
-        $is_unique = $this->is_unique($data['cate_name'], $is_exist_id ? 0 : $data['id'],'cate_name');
-        if($is_unique){
-            $this->result('','0','存在同名分类名');
-        }
+//        $is_unique = $this->is_unique($data['cate_name'], $is_exist_id ? 0 : $data['id'],'cate_name');
+//        if($is_unique){
+//            $this->result('','0','存在同名分类名');
+//        }
 
         // 更新数据
         if(!$is_exist_id){
