@@ -81,7 +81,7 @@ class Category extends BaseModel
     /*
      * 获取分类信息  --- 多个分类
      */
-    private static function _getSelCate($ids=[],$fieldStr){
+    private static function _getSelCate($ids=[],$fieldStr=''){
         $field = 'id,pid,cate_name,cate_img';
         if($fieldStr) $field .= $fieldStr;
         $data = self::where('show_cate','=','1')
