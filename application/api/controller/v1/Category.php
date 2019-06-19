@@ -33,7 +33,7 @@ class Category extends BaseController
 
     // 获取首页推荐顶级分类
     public static function getIndexRescCate(){
-        $data = CategoryModel::getRecIndexCate(5, 0);
+        $data = CategoryModel::getRecIndexCate(5, 32);
         foreach ($data as $key => &$val){
             $sonData = CategoryModel::getRecIndexCate(5, $val['id']);
             $val['sonData'] = $sonData;
@@ -79,6 +79,13 @@ class Category extends BaseController
         return $data;
     }
 
+    /**
+     * 获取下一级分类
+     * @url
+     * @http
+     * @param int $cateid
+     * @return array|false|\PDOStatement|string|\think\Collection
+     */
     public function getSonCate($cateid=0){
         (new CateIDMustBePositiveInt())->goCheck();
         if($cateid == 0){
@@ -86,6 +93,13 @@ class Category extends BaseController
         }else{
             $data = CategoryModel::getSonData($cateid);
         }
+        return $data;
+    }
+
+    public function getAllSonCate($cateid=0){
+        (new CateIDMustBePositiveInt())->goCheck();
+        $data = CategoryModel::getAllSonData($cateid);
+
         return $data;
     }
 }

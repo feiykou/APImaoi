@@ -26,11 +26,11 @@ Route::get('api/:version/product/search', 'api/:version.Product/search');
  * 分类
  */
 Route::get('api/:version/cate/topCate', 'api/:version.Category/getTopCate');
-Route::get('api/:version/cate/sonCate/[:cateid]', 'api/:version.Category/getSonCate');
+Route::get('api/:version/cate/sonCate/[:cateid]', 'api/:version.Category/getSonCate',[],['cateid'=>'\d+']);
 Route::get('api/:version/cate/getProducts','api/:version.Category/getProductsByCate');
 Route::get('api/:version/cate/filteCate','api/:version.Category/filteCate');
 Route::get('api/:version/cate/indexRescCate','api/:version.Category/getIndexRescCate');
-
+Route::get('api/:version/cate/sonAllCate/[:cateid]', 'api/:version.Category/getAllSonCate',[],['cateid'=>'\d+']);
 
 /**
  * 主题

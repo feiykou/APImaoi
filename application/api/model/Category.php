@@ -83,7 +83,7 @@ class Category extends BaseModel
      */
     private static function _getSelCate($ids=[]){
         $data = self::where('show_cate','=','1')
-            ->field('id,cate_name,cate_img')
+            ->field('id,pid,cate_name,cate_img')
             ->order([
                 'sort' => 'desc',
                 'id' => 'desc'
@@ -95,10 +95,21 @@ class Category extends BaseModel
     public static function getSonData($cateId){
         $cateTree = new Catetree();
         $ids = $cateTree->sonids($cateId, new self());
-
         $data = [];
         if(count($ids) > 0){
             $data = self::_getSelCate($ids);
+        }
+        return $data;
+    }
+
+    public static function getAllSonData($cateId){
+        $cateTree = new Catetree();
+        $ids = $cateTree->childrenids($cateId, new self());
+        $data = [];
+        if(count($ids) > 0){
+            $data = self::_getSelCate($ids)->toArray();
+            $data = $cateTree->generateTree($data);
+
         }
         return $data;
     }
