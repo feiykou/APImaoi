@@ -81,9 +81,11 @@ class Category extends BaseModel
     /*
      * 获取分类信息  --- 多个分类
      */
-    private static function _getSelCate($ids=[]){
+    private static function _getSelCate($ids=[],$fieldStr){
+        $field = 'id,pid,cate_name,cate_img';
+        if($fieldStr) $field .= $fieldStr;
         $data = self::where('show_cate','=','1')
-            ->field('id,pid,cate_name,cate_img')
+            ->field($field)
             ->order([
                 'sort' => 'desc',
                 'id' => 'desc'
@@ -97,7 +99,7 @@ class Category extends BaseModel
         $ids = $cateTree->sonids($cateId, new self());
         $data = [];
         if(count($ids) > 0){
-            $data = self::_getSelCate($ids);
+            $data = self::_getSelCate($ids,',description');
         }
         return $data;
     }

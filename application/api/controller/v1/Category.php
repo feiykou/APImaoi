@@ -99,7 +99,6 @@ class Category extends BaseController
     public function getAllSonCate($cateid=0){
         (new CateIDMustBePositiveInt())->goCheck();
         $data = CategoryModel::getAllSonData($cateid);
-
         return $data;
     }
 }
